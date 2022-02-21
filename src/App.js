@@ -33,7 +33,7 @@ function App() {
             <Typography variant="h2">My Pogues</Typography>
             <Typography variant="h6">Sauvegarde de questionnaire de Pogues du Cloud</Typography>
             <Typography>
-              <i>Les questionnaire sont sauvegardés dans votre navigateur</i>
+              <i>Les questionnaires sont sauvegardés dans votre navigateur</i>
             </Typography>
           </header>
           <QuestionnaireList />
