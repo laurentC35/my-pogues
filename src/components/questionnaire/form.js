@@ -123,7 +123,7 @@ export const QuestionnaireForm = () => {
           }}
           disableRipple
         >
-          Rechercher dans la base de donnée de Pogues
+          Rechercher dans la base de données de Pogues
         </MenuItem>
       </StyledMenu>
       {dialog === 'id' && <FormId onClose={closeDialog} open save={saveQuestionnaire} />}
