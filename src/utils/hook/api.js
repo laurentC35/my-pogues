@@ -19,7 +19,7 @@ export const useAPI = () => {
 
   const putQuestionnaire = useCallback(
     (id, questionnaire) => {
-      return API.putQuestionnaire(apiUrl)(token)(questionnaire);
+      return API.putQuestionnaire(apiUrl)(id)(token)(questionnaire);
     },
     [apiUrl]
   );
