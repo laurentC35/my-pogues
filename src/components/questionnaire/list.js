@@ -8,6 +8,9 @@ import {
 } from '@mui/icons-material';
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   IconButton,
   Paper,
   Table,
@@ -19,7 +22,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { format } from 'date-fns';
 import { db } from 'utils/database/db';
 import { useAPI } from 'utils/hook';
@@ -31,6 +34,9 @@ import { ItemMenu } from './itemMenu';
 
 export const QuestionnaireList = () => {
   const { setLoading, openNewNotif } = useContext(AppContext);
+
+  const [open, setOpen] = useState(false);
+  const onClose = () => setOpen(false);
 
   const setSuccessMessage = newMessage => {
     openNewNotif({ severity: 'success', message: newMessage });
@@ -184,7 +190,7 @@ export const QuestionnaireList = () => {
         <>
           <ItemMenu action={allUpdateFromPogues} title="Tout mettre à jour" from />
 
-          <Button onClick={allDelete}>Tout supprimer</Button>
+          <Button onClick={() => setOpen(true)}>Tout supprimer</Button>
           <TableContainer component={Paper} className={'save-list'}>
             <Table>
               <TableHead>
@@ -244,6 +250,14 @@ export const QuestionnaireList = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <Dialog open={open} onClose={onClose}>
+            <DialogTitle>{'Êtes-vous sûr de vouloir tout supprimer ?'}</DialogTitle>
+
+            <DialogActions>
+              <Button onClick={onClose}>Non</Button>
+              <Button onClick={allDelete}>Oui</Button>
+            </DialogActions>
+          </Dialog>
         </>
       )}
       {!questionnaires ||
