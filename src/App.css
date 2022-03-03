@@ -5,6 +5,15 @@ body {
 
 header {
   margin-bottom: 2em;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1em;
+  border-bottom: gray solid thin;
+}
+
+header .right {
+  display: flex;
+  align-items: center;
 }
 
 #root .save-list {
@@ -17,4 +26,12 @@ header {
 
 #root .no-data {
   margin-bottom: 1em;
+}
+
+.env-dialog {
+  min-width: 20em;
+}
+
+body .name-form {
+  margin-bottom: 1.5em;
 }

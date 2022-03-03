@@ -8,6 +8,7 @@ import { KeyboardArrowDown } from '@mui/icons-material';
 import { FormId } from './formId';
 import { AppContext } from 'App';
 import { FormSearch } from './formSearch';
+import { ItemMenu } from './itemMenu';
 
 const StyledMenu = styled(props => (
   <Menu
@@ -56,29 +57,34 @@ export const QuestionnaireForm = () => {
     setAnchorEl(null);
   };
 
+  const [conf, setConf] = useState(null);
+
   const [dialog, setDialog] = useState(null);
   const closeDialog = () => setDialog(null);
   const { setLoading, openNewNotif } = useContext(AppContext);
   const { getQuestionnaire } = useAPI();
 
   const saveQuestionnaire = async id => {
-    try {
-      closeDialog();
-      setLoading(true);
-      const { data } = await getQuestionnaire(id);
-      if (data) {
-        await db.questionnaire.put(questionnaireToSavedObject(data));
-        openNewNotif({ severity: 'success', message: 'Questionnaire enregistré avec succès' });
-      } else
+    if (conf) {
+      try {
+        closeDialog();
+        setLoading(true);
+        const { data } = await getQuestionnaire(conf, id);
+        if (data) {
+          await db.questionnaire.put(questionnaireToSavedObject(data));
+          openNewNotif({ severity: 'success', message: 'Questionnaire enregistré avec succès' });
+        } else
+          openNewNotif({
+            severity: 'error',
+            message: "Erreur lors de l'enregistrement du questionnaire",
+          });
+      } catch (e) {
+        console.log(e);
         openNewNotif({
           severity: 'error',
           message: "Erreur lors de l'enregistrement du questionnaire",
         });
-    } catch (e) {
-      openNewNotif({
-        severity: 'error',
-        message: "Erreur lors de l'enregistrement du questionnaire",
-      });
+      }
     }
 
     setLoading(false);
@@ -107,27 +113,33 @@ export const QuestionnaireForm = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            setDialog('id');
-          }}
-          disableRipple
-        >
-          À partir d'un identifant
+        <MenuItem>
+          <ItemMenu
+            from
+            action={conf => {
+              setConf(conf);
+              handleClose();
+              setDialog('id');
+            }}
+            title="À partir d'un identifant"
+          />
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            setDialog('search');
-          }}
-          disableRipple
-        >
-          Rechercher dans la base de données de Pogues
+        <MenuItem>
+          <ItemMenu
+            from
+            action={conf => {
+              setConf(conf);
+              handleClose();
+              setDialog('search');
+            }}
+            title="Rechercher dans la base de données de Pogues"
+          />
         </MenuItem>
       </StyledMenu>
       {dialog === 'id' && <FormId onClose={closeDialog} open save={saveQuestionnaire} />}
-      {dialog === 'search' && <FormSearch onClose={closeDialog} open save={saveQuestionnaire} />}
+      {dialog === 'search' && (
+        <FormSearch onClose={closeDialog} open save={saveQuestionnaire} conf={conf} />
+      )}
     </>
   );
 };

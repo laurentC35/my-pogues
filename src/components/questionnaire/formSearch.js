@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -19,8 +20,9 @@ import { AppContext } from 'App';
 import React, { useContext, useEffect, useState } from 'react';
 import { useAPI } from 'utils/hook';
 import { questionnaireToDisplaySearch } from 'utils/questionnaire';
+import { Close } from '@mui/icons-material';
 
-export const FormSearch = ({ open, onClose, id, setId, save }) => {
+export const FormSearch = ({ open, onClose, save, conf }) => {
   const { setLoading } = useContext(AppContext);
   const [selectedQuest, setSelectedQuest] = useState(null);
 
@@ -31,14 +33,14 @@ export const FormSearch = ({ open, onClose, id, setId, save }) => {
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const { data } = await getallQuestionnaires();
+      const { data } = await getallQuestionnaires(conf);
       if (data && Array.isArray(data)) {
         setQuestionnaires(data);
       }
       setLoading(false);
     };
     if (!questionnaires) load();
-  }, [getallQuestionnaires, questionnaires, setLoading]);
+  }, [getallQuestionnaires, questionnaires, setLoading, conf]);
 
   const confirm = () => {
     const { id } = selectedQuest;
@@ -50,7 +52,21 @@ export const FormSearch = ({ open, onClose, id, setId, save }) => {
 
   return (
     <Dialog open={open} onClose={onClose} sx={{ zIndex: theme => theme.zIndex.drawer + 10 }}>
-      <DialogTitle>Ajouter un nouveau questionnaire</DialogTitle>
+      <DialogTitle>
+        {'Ajouter un nouveau questionnaire'}
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         {selectedQuest && (
           <>

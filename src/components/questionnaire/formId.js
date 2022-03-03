@@ -1,3 +1,4 @@
+import { Close } from '@mui/icons-material';
 import {
   Button,
   Dialog,
@@ -5,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
   TextField,
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -15,7 +17,21 @@ export const FormId = ({ open, onClose, save }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Ajouter un nouveau questionnaire</DialogTitle>
+      <DialogTitle>
+        {'Ajouter un nouveau questionnaire'}
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>Veuillez précisez l'identifiant du questionnaire</DialogContentText>
         <TextField

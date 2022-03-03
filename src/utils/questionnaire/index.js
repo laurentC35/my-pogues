@@ -1,3 +1,5 @@
+import { getLocalConf } from 'utils/constants';
+
 export const questionnaireToDisplaySearch = questionnaire => {
   const { id, Label, lastUpdatedDate } = questionnaire;
   return {
@@ -12,5 +14,6 @@ export const questionnaireToSavedObject = questionnaire => {
   return {
     ...questionnaireToDisplaySearch(questionnaire),
     saveDate: new Date().getTime(),
+    confs: { cloud: getLocalConf() },
   };
 };
