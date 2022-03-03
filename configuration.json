@@ -1,4 +1,11 @@
 {
-  "poguesUrl": "https://pogues.dev.insee.io",
-  "poguesBoUrl": "https://pogues-back-office.dev.insee.io"
+  "envs": [
+    {
+      "name": "Cloud",
+      "conf": {
+        "poguesUrl": "https://pogues.dev.insee.io",
+        "poguesBoUrl": "https://pogues-back-office.dev.insee.io"
+      }
+    }
+  ]
 }
