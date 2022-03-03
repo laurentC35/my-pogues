@@ -48,7 +48,8 @@ export const ItemMenu = ({ icon, title, action, from }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+    if (environnements.length > 1) setAnchorEl(event.currentTarget);
+    else action(environnements[0].conf);
   };
   const handleClose = () => {
     setAnchorEl(null);
