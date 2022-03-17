@@ -47,11 +47,10 @@ const AccordionSummary = styled(props => (
   fontWeight: 'bold',
 }));
 
-export const NewsUpdate = () => {
+export const NewsUpdate = ({ open, setOpen }) => {
   const [lastVersion] = useState(window.localStorage.getItem('my-pogues-version') || '');
   const [init, setInit] = useState(false);
   const [updates, setUpdates] = useState(null);
-  const [open, setOpen] = useState(false);
   const { appVersion } = useContext(AppContext);
 
   useEffect(() => {
@@ -67,11 +66,12 @@ export const NewsUpdate = () => {
 
   useEffect(() => {
     if (init && updates && lastVersion !== appVersion) setOpen(true);
-  }, [appVersion, init, lastVersion, updates]);
+  }, [appVersion, init, lastVersion, setOpen, updates]);
 
   const close = () => {
     setOpen(false);
     window.localStorage.setItem('my-pogues-version', appVersion);
+    setExpanded(0);
   };
 
   const [expanded, setExpanded] = useState(0);
@@ -83,7 +83,7 @@ export const NewsUpdate = () => {
   return (
     <Dialog open={open} onClose={close} fullWidth maxWidth="md">
       <DialogTitle>
-        Jeter un oeil aux nouveautés !
+        Jeter un oeil aux évolutions de l'application !
         <IconButton
           aria-label="close"
           onClick={close}

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { Button, IconButton, Tooltip, Typography } from '@mui/material';
 import './App.css';
 import { EnvForm } from 'components/settings';
 import { Settings } from '@mui/icons-material';
@@ -11,6 +11,7 @@ import { AppContext } from 'MainApp';
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { appVersion } = useContext(AppContext);
+  const [newsOpen, setNewsOpen] = useState(false);
 
   return (
     <>
@@ -34,7 +35,11 @@ function App() {
             </Tooltip>
           </div>
           <div>
-            <i>{`Version ${appVersion}`}</i>
+            <Tooltip title={`Voir le "changelog"`}>
+              <Button onClick={() => setNewsOpen(true)}>
+                <i>{`Version ${appVersion}`}</i>
+              </Button>
+            </Tooltip>
           </div>
         </div>
       </header>
@@ -42,7 +47,7 @@ function App() {
         <Outlet />
       </main>
       <EnvForm open={settingsOpen} onClose={() => setSettingsOpen(false)} />
-      <NewsUpdate />
+      <NewsUpdate open={newsOpen} setOpen={setNewsOpen} />
     </>
   );
 }

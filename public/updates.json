@@ -12,13 +12,13 @@
       "content": [
         "Vous pouvez désormais paramétrer des visualisations (contexte, pagination, ...).",
         "Les visualisations sont sauvegardées dans le navigateur.",
-        "Pour chaque visualisation, il est possible d'éditer les métaonnées d'enquêtes."
+        "Pour chaque visualisation, il est possible d'éditer les métadonnées de l'enquête."
       ]
     },
     {
       "title": "Version 1.1.0 : Paramétrage de la configuration et import/export de sauvegarde",
       "content": [
-        "Vous pouvez désormais paramétrer des changer la configuration (pour pointer vers d'autres infrastructures que celle par défaut.",
+        "Vous pouvez désormais paramétrer la configuration et en ajouter de nouvelles (pour pointer vers d'autres infrastructures que celle par défaut).",
         "Ajout d'un export/import de sauvegarde sous format d'un fichier json des données saisies dans l'application."
       ]
     },
