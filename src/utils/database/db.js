@@ -9,3 +9,8 @@ db.version(1).stores({
 db.version(2).stores({
   env: '++id, name, conf',
 });
+
+db.version(3).stores({
+  visualization:
+    '++id, questionnaireId, idLunatic, idMetadata,title, url, jsonLunatic, enoParams, metadata',
+});

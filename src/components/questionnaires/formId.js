@@ -16,7 +16,7 @@ export const FormId = ({ open, onClose, save }) => {
   const handleChange = e => setId(e.target.value);
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
         {'Ajouter un nouveau questionnaire'}
         <IconButton

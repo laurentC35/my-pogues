@@ -8,7 +8,7 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import { AppContext } from 'App';
+import { AppContext } from 'MainApp';
 import React, { useContext, useEffect, useState } from 'react';
 
 export const ConfigurationForm = ({ create, open, onClose, environnement = {}, saveEnv }) => {
@@ -51,7 +51,7 @@ export const ConfigurationForm = ({ create, open, onClose, environnement = {}, s
   }, [id, environnements, formName]);
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle>
         {create
           ? `Créer la configuration "${formName}"`

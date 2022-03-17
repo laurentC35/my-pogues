@@ -4,13 +4,10 @@ import {
   Delete,
   Download,
   FileUpload,
+  ScreenSearchDesktop,
   Visibility,
 } from '@mui/icons-material';
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   IconButton,
   Paper,
   Table,
@@ -22,21 +19,19 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { format } from 'date-fns';
 import { db } from 'utils/database/db';
 import { useAPI } from 'utils/hook';
 import { useQuestionnaireList } from 'utils/hook/database';
 import { questionnaireToSavedObject } from 'utils/questionnaire';
 import { downloadDataAsJson } from 'utils/api/dataDownload';
-import { AppContext } from 'App';
-import { ItemMenu } from './itemMenu';
+import { AppContext } from 'MainApp';
+import { ConfMenu } from './ConfMenu';
+import { Link } from 'react-router-dom';
 
 export const QuestionnaireList = () => {
   const { setLoading, openNewNotif } = useContext(AppContext);
-
-  const [open, setOpen] = useState(false);
-  const onClose = () => setOpen(false);
 
   const setSuccessMessage = newMessage => {
     openNewNotif({ severity: 'success', message: newMessage });
@@ -58,10 +53,12 @@ export const QuestionnaireList = () => {
         if (deletePogues) {
           const { status } = await deleteQuestionnaire(conf, id);
           if (status === 204) {
+            await db.visualization.where('questionnaireId').equals(id).delete();
             await db.questionnaire.delete(id);
             success = true;
           }
         } else {
+          await db.visualization.where('questionnaireId').equals(id).delete();
           await db.questionnaire.delete(id);
           success = true;
         }
@@ -153,44 +150,12 @@ export const QuestionnaireList = () => {
     setLoading(false);
   };
 
-  const allDelete = async (e, deletePogues = false) => {
-    setLoading(true);
-    try {
-      await (questionnaires || []).reduce(async (previousPromise, q) => {
-        await previousPromise;
-        const update = async () => {
-          const { id } = q;
-          let success = false;
-          if (deletePogues) {
-            const { status } = await deleteQuestionnaire(id);
-            if (status === 204) {
-              await db.questionnaire.delete(id);
-              success = true;
-            }
-          } else {
-            await db.questionnaire.delete(id);
-            success = true;
-          }
-          if (!success) throw new Error("Erreur lors d'une suppression");
-        };
-
-        return update();
-      }, Promise.resolve({}));
-      setSuccessMessage('Tous les questionnaires ont été supprimés');
-    } catch (e) {
-      setErrorMessage("Certains questionnaires n'ont pas été supprimés");
-    }
-
-    setLoading(false);
-  };
-
   return (
     <>
       {questionnaires?.length > 0 && (
         <>
-          <ItemMenu action={allUpdateFromPogues} title="Tout mettre à jour" from />
+          <ConfMenu action={allUpdateFromPogues} title="Tout mettre à jour" from />
 
-          <Button onClick={() => setOpen(true)}>Tout supprimer</Button>
           <TableContainer component={Paper} className={'save-list'}>
             <Table>
               <TableHead>
@@ -212,18 +177,18 @@ export const QuestionnaireList = () => {
                       <TableCell>{format(new Date(poguesDate), 'dd/MM/yyyy à HH:mm:ss')}</TableCell>
                       <TableCell>{format(new Date(saveDate), 'dd/MM/yyyy à HH:mm:ss')}</TableCell>
                       <TableCell>
-                        <ItemMenu
+                        <ConfMenu
                           action={openPogues(id)}
                           icon={<Visibility />}
                           title="Ouvrir le questionnaire dans Pogues"
                         />
-                        <ItemMenu
+                        <ConfMenu
                           from
                           action={updateItemFromPogues(id)}
                           icon={<CloudDownload />}
                           title="Mettre à jour la sauvegarde"
                         />
-                        <ItemMenu
+                        <ConfMenu
                           action={updateItemFromLocal(id)}
                           icon={<Backup />}
                           title="Remplacer la version de Pogues par celle-ci"
@@ -233,11 +198,18 @@ export const QuestionnaireList = () => {
                             <Download />
                           </IconButton>
                         </Tooltip>
-                        <ItemMenu
+                        <ConfMenu
                           action={createQuestionnaire(id)}
                           icon={<FileUpload />}
                           title="Créer le questionnaire dans Pogues"
                         />
+                        <Tooltip title="Voir mes visualisations">
+                          <Link to={`/questionnaire/${id}/visualisations`}>
+                            <IconButton>
+                              <ScreenSearchDesktop />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
                         <Tooltip title="Supprimer la sauvegarde">
                           <IconButton onClick={() => deleteItem(id)()}>
                             <Delete />
@@ -250,14 +222,6 @@ export const QuestionnaireList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{'Êtes-vous sûr de vouloir tout supprimer ?'}</DialogTitle>
-
-            <DialogActions>
-              <Button onClick={onClose}>Non</Button>
-              <Button onClick={allDelete}>Oui</Button>
-            </DialogActions>
-          </Dialog>
         </>
       )}
       {!questionnaires ||

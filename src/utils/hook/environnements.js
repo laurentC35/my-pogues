@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from 'utils/database/db';
 
@@ -9,18 +9,43 @@ const loadConf = async () => {
 };
 
 export const useEnvs = () => {
+  const [envInit, setEnvInit] = useState(false);
+  const [defaultConf, setDefaultConf] = useState(null);
+
+  useEffect(() => {
+    const loadDefaultConf = async () => {
+      const { envs } = await loadConf();
+      setDefaultConf(envs[0]);
+    };
+    if (!defaultConf) loadDefaultConf();
+  }, [defaultConf]);
+
   const environnements = useLiveQuery(() => db.env.toArray());
-  // Init default env in database
+
+  // Init default env in database (and update oldConf)
   useEffect(() => {
     const init = async () => {
-      const { envs } = await loadConf();
-      const defaultEnv = envs[0];
-      await db.env.put(defaultEnv);
+      await db.env.put(defaultConf);
+      setEnvInit(true);
     };
-    if (environnements?.length === 0) {
-      init();
-    }
-  }, [environnements]);
+
+    const updateOldConf = async () => {
+      await environnements.reduce(async (previousPromise, env) => {
+        await previousPromise;
+        const updateEnv = async () => {
+          if (Object.keys(env.conf).length < Object.keys(defaultConf.conf).length) {
+            await db.env.put({ ...env, conf: { ...defaultConf.conf, ...env.conf } });
+          }
+        };
+
+        return updateEnv();
+      }, Promise.resolve());
+      setEnvInit(true);
+    };
+
+    if (!envInit && defaultConf && environnements?.length === 0) init();
+    if (defaultConf && environnements?.length > 0) updateOldConf();
+  }, [defaultConf, environnements, envInit]);
 
   const saveEnvironnement = async conf => {
     await db.env.put(conf);
@@ -34,10 +59,5 @@ export const useEnvs = () => {
     await db.env.clear();
   };
 
-  return {
-    environnements,
-    saveEnvironnement,
-    deleteEnvironnement,
-    reset,
-  };
+  return { environnements, saveEnvironnement, deleteEnvironnement, reset, defaultConf };
 };

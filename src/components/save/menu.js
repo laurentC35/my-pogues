@@ -1,6 +1,6 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
-import { FileDownload, Publish, Save } from '@mui/icons-material';
+import { Archive, Save, Unarchive } from '@mui/icons-material';
 import { exportSave } from 'utils/save';
 import { ImportForm } from './import';
 
@@ -32,13 +32,13 @@ export const SaveMenu = () => {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={onClickItem(() => setSaveOpen(true))}>
           <ListItemIcon>
-            <Publish fontSize="small" />
+            <Unarchive fontSize="small" />
           </ListItemIcon>
           <ListItemText>Importer</ListItemText>
         </MenuItem>
         <MenuItem onClick={onClickItem(exportSave)}>
           <ListItemIcon>
-            <FileDownload fontSize="small" />
+            <Archive fontSize="small" />
           </ListItemIcon>
           <ListItemText>Exporter</ListItemText>
         </MenuItem>

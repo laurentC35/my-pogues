@@ -4,12 +4,14 @@ import { db } from 'utils/database/db';
 export const exportSave = async (e, fileName) => {
   const questionnaires = await db.questionnaire.toArray();
   const envs = await db.env.toArray();
+  const visualizations = await db.visualization.toArray();
   const finalFileName = fileName ? fileName : `my-pogues-${new Date().getTime()}`;
-  downloadDataAsJson({ questionnaires, envs }, finalFileName);
+  downloadDataAsJson({ questionnaires, envs, visualizations }, finalFileName);
 };
 
 export const importSave = async data => {
-  const { questionnaires, envs } = data;
-  await db.questionnaire.bulkPut(questionnaires);
-  await db.env.bulkPut(envs);
+  const { questionnaires, envs, visualizations } = data;
+  if (questionnaires) await db.questionnaire.bulkPut(questionnaires);
+  if (envs) await db.env.bulkPut(envs);
+  if (visualizations) await db.visualization.bulkPut(visualizations);
 };

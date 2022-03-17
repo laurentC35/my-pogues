@@ -1,14 +1,14 @@
 import { styled, alpha } from '@mui/material/styles';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button, Menu } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { db } from 'utils/database/db';
 import { useAPI } from 'utils/hook';
 import { questionnaireToSavedObject } from 'utils/questionnaire';
 import { KeyboardArrowDown } from '@mui/icons-material';
 import { FormId } from './formId';
-import { AppContext } from 'App';
+import { AppContext } from 'MainApp';
 import { FormSearch } from './formSearch';
-import { ItemMenu } from './itemMenu';
+import { ConfMenu } from './ConfMenu';
 
 const StyledMenu = styled(props => (
   <Menu
@@ -79,7 +79,6 @@ export const QuestionnaireForm = () => {
             message: "Erreur lors de l'enregistrement du questionnaire",
           });
       } catch (e) {
-        console.log(e);
         openNewNotif({
           severity: 'error',
           message: "Erreur lors de l'enregistrement du questionnaire",
@@ -113,28 +112,26 @@ export const QuestionnaireForm = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem>
-          <ItemMenu
-            from
-            action={conf => {
-              setConf(conf);
-              handleClose();
-              setDialog('id');
-            }}
-            title="À partir d'un identifant"
-          />
-        </MenuItem>
-        <MenuItem>
-          <ItemMenu
-            from
-            action={conf => {
-              setConf(conf);
-              handleClose();
-              setDialog('search');
-            }}
-            title="Rechercher dans la base de données de Pogues"
-          />
-        </MenuItem>
+        <ConfMenu
+          from
+          item
+          action={conf => {
+            setConf(conf);
+            handleClose();
+            setDialog('id');
+          }}
+          title="À partir d'un identifant"
+        />
+        <ConfMenu
+          from
+          item
+          action={conf => {
+            setConf(conf);
+            handleClose();
+            setDialog('search');
+          }}
+          title="Rechercher dans la base de données de Pogues"
+        />
       </StyledMenu>
       {dialog === 'id' && <FormId onClose={closeDialog} open save={saveQuestionnaire} />}
       {dialog === 'search' && (

@@ -15,16 +15,16 @@ import {
   TableRow,
   Tooltip,
 } from '@mui/material';
-import { AppContext } from 'App';
+import { AppContext } from 'MainApp';
 import React, { useContext, useState } from 'react';
 import { ConfigurationForm } from '.';
 
 export const EnvForm = ({ open, onClose }) => {
   const {
-    env: { environnements, saveEnvironnement, deleteEnvironnement, reset },
+    env: { environnements, saveEnvironnement, deleteEnvironnement, reset, defaultConf },
   } = useContext(AppContext);
 
-  const defaultConf = Object.keys(environnements[0].conf).reduce((acc, k) => {
+  const defaultConfForm = Object.keys(defaultConf?.conf || {}).reduce((acc, k) => {
     return { ...acc, [k]: '' };
   }, {});
 
@@ -43,14 +43,14 @@ export const EnvForm = ({ open, onClose }) => {
 
   const openFormForNewEnv = () => {
     setCreate(true);
-    setEnvironnementEdit({ name: 'Nouvelle Configuration', conf: defaultConf });
+    setEnvironnementEdit({ name: 'Nouvelle Configuration', conf: defaultConfForm });
   };
 
   const canDelete = environnements?.length > 1;
 
   return (
     <>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
         <DialogTitle>
           {'Modifier les environnements'}
           <IconButton

@@ -9,7 +9,7 @@ import {
   IconButton,
 } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
-import { AppContext } from 'App';
+import { AppContext } from 'MainApp';
 import { importSave } from 'utils/save';
 
 export const ImportForm = ({ open, onClose }) => {

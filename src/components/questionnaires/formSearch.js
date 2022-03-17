@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
-import { AppContext } from 'App';
+import { AppContext } from 'MainApp';
 import React, { useContext, useEffect, useState } from 'react';
 import { useAPI } from 'utils/hook';
 import { questionnaireToDisplaySearch } from 'utils/questionnaire';
@@ -51,7 +51,13 @@ export const FormSearch = ({ open, onClose, save, conf }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} sx={{ zIndex: theme => theme.zIndex.drawer + 10 }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      sx={{ zIndex: theme => theme.zIndex.drawer + 10 }}
+    >
       <DialogTitle>
         {'Ajouter un nouveau questionnaire'}
         <IconButton
