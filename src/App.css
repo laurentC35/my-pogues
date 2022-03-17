@@ -17,6 +17,14 @@ body {
 .as-header .right {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.as-header .right .icons {
+  display: flex;
+  align-items: center;
 }
 
 #root .save-list {
