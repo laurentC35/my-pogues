@@ -202,7 +202,7 @@ export const Questionnaire = () => {
         </div>
       </div>
 
-      {questionnaireFromDb && !(!visualizations || visualizations?.length === 0) && (
+      {questionnaireFromDb && (!visualizations || visualizations?.length === 0) && (
         <Typography>Pas de visualisation</Typography>
       )}
       {visualizations?.length > 0 && (
