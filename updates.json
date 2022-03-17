@@ -16,7 +16,7 @@
       ]
     },
     {
-      "title": "Version 1.1.0 : Paramétrage de la configuration et import/export de sauvegarde",
+      "title": "Version 1.1.0 : Paramétrage de la configuration et import/export de sauvegarde.",
       "content": [
         "Vous pouvez désormais paramétrer la configuration et en ajouter de nouvelles (pour pointer vers d'autres infrastructures que celle par défaut).",
         "Ajout d'un export/import de sauvegarde sous format d'un fichier json des données saisies dans l'application."
