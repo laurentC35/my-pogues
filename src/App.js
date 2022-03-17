@@ -19,7 +19,7 @@ function App() {
         <div className="left">
           <Typography variant="h2">My Pogues</Typography>
           <Typography variant="h6">
-            Sauvegarde et visualisation de questionnaire de Pogues
+            Sauvegarde et visualisation de questionnaires saisis avec Pogues
           </Typography>
           <Typography>
             <i>Les questionnaires et visualisations sont sauvegardés dans votre navigateur</i>
