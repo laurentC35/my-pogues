@@ -98,8 +98,10 @@ export const Questionnaire = () => {
       visuError = visuError || error;
       if (!error && data) {
         const { id: questId } = data;
-        const idLunatic = `${questId}-q-${visualizations.length}`;
-        const idMetadata = metadata ? `${questId}-m-${visualizations.length}` : null;
+        const idLunatic = `${questId}-q-${visualizations.length}-${new Date().getTime()}`;
+        const idMetadata = metadata
+          ? `${questId}-m-${visualizations.length}-${new Date().getTime()}`
+          : null;
         const jsonLunatic = { ...data, id: idLunatic };
         const { error: errorQuest } = await postLunaticQuestionnaire(conf, jsonLunatic);
 
