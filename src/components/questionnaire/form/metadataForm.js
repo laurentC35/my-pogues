@@ -108,7 +108,7 @@ export const MetadataForm = ({ mode, context, metadata, setMetadata }) => {
   };
 
   const globaleSave = onlyVariables => () => {
-    if (onlyVariables) {
+    if (onlyVariables && currentEdition) {
       const newMetadata = {
         inseeContext: context.toLowerCase(),
         variables: Object.entries(currentEdition).map(([name, value]) => {
