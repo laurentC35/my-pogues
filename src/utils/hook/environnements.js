@@ -9,7 +9,6 @@ const loadConf = async () => {
 };
 
 export const useEnvs = () => {
-  const [envInit, setEnvInit] = useState(false);
   const [defaultConf, setDefaultConf] = useState(null);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ export const useEnvs = () => {
   useEffect(() => {
     const init = async () => {
       await db.env.put(defaultConf);
-      setEnvInit(true);
     };
 
     const updateOldConf = async () => {
@@ -40,12 +38,11 @@ export const useEnvs = () => {
 
         return updateEnv();
       }, Promise.resolve());
-      setEnvInit(true);
     };
 
-    if (!envInit && defaultConf && environnements?.length === 0) init();
+    if (defaultConf && environnements?.length === 0) init();
     if (defaultConf && environnements?.length > 0) updateOldConf();
-  }, [defaultConf, environnements, envInit]);
+  }, [defaultConf, environnements]);
 
   const saveEnvironnement = async conf => {
     await db.env.put(conf);
