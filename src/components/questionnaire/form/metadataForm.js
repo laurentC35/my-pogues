@@ -14,7 +14,7 @@ import {
 import React, { useState } from 'react';
 import { EndPageForm } from './metadata/endForm';
 import { HouseholdForm } from './metadata/householdForm';
-import { MainLogoForm } from './metadata/mainLogoForm';
+import { MainLogoForm } from './metadata/stylesAndMainLogoForm';
 import { ValidationPageForm } from './metadata/validationForm ';
 import { WelcomePageForm } from './metadata/welcomeForm';
 
@@ -22,14 +22,13 @@ const steps = [
   `Page d'accueil`,
   'Page de validation',
   'Page de fin',
-  `Logo de l'application de collecte`,
+  `Styles et autres personnalisations`,
   'Fin',
 ];
 
 const pageStep = ['welcome', 'validation', 'end'];
 
 export const MetadataForm = ({ mode, context, metadata, setMetadata }) => {
-  console.log('metadata', metadata);
   const [currentStep, setCurrentStep] = useState(0);
   const [completed, setCompleted] = useState({});
 
@@ -63,11 +62,12 @@ export const MetadataForm = ({ mode, context, metadata, setMetadata }) => {
     }
   };
 
-  const saveMainLogo = mainLogo => {
+  const saveStylesAndMainLogo = ({ mainLogo, style }) => {
     setMetadataForm({
       ...metadataForm,
       inseeContext: context.toLowerCase(),
       mainLogo,
+      style,
     });
   };
 
@@ -77,7 +77,7 @@ export const MetadataForm = ({ mode, context, metadata, setMetadata }) => {
       savePage(page, currentEdition);
     }
     if (currentStep === 3 && currentEdition) {
-      saveMainLogo(currentEdition);
+      saveStylesAndMainLogo(currentEdition);
     }
     if (currentStep !== steps.length - 1) {
       let newCompleted = { ...completed, [currentStep]: true };
@@ -207,7 +207,11 @@ export const MetadataForm = ({ mode, context, metadata, setMetadata }) => {
                 <EndPageForm endPage={metadataForm?.genericPages?.end} save={setCurrentEdition} />
               )}
               {currentStep === 3 && (
-                <MainLogoForm mainLogo={metadataForm?.mainLogo} save={setCurrentEdition} />
+                <MainLogoForm
+                  mainLogo={metadataForm?.mainLogo}
+                  style={metadataForm?.style}
+                  save={setCurrentEdition}
+                />
               )}
               {currentStep === steps.length - 1 && (
                 <>

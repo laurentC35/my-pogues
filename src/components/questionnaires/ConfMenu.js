@@ -1,5 +1,13 @@
 import { styled, alpha } from '@mui/material/styles';
-import { Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { AppContext } from 'MainApp';
 
@@ -40,7 +48,7 @@ const StyledMenu = styled(props => (
   },
 }));
 
-export const ConfMenu = ({ icon, title, action, from, item }) => {
+export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
   const {
     env: { environnements },
   } = useContext(AppContext);
@@ -57,7 +65,7 @@ export const ConfMenu = ({ icon, title, action, from, item }) => {
 
   return (
     <>
-      {icon && (
+      {!startIcon && icon && (
         <Tooltip title={title}>
           <IconButton
             onClick={handleClick}
@@ -73,6 +81,7 @@ export const ConfMenu = ({ icon, title, action, from, item }) => {
       {!icon && !item && (
         <Button
           onClick={handleClick}
+          startIcon={startIcon}
           disableElevation
           variant="contained"
           aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -82,7 +91,12 @@ export const ConfMenu = ({ icon, title, action, from, item }) => {
           {title}
         </Button>
       )}
-      {!icon && item && <MenuItem onClick={handleClick}>{title}</MenuItem>}
+      {!icon && item && (
+        <MenuItem onClick={handleClick}>
+          <ListItemIcon>{startIcon}</ListItemIcon>
+          <ListItemText>{title}</ListItemText>
+        </MenuItem>
+      )}
       <StyledMenu
         id="button-title"
         MenuListProps={{

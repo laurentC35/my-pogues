@@ -1,6 +1,13 @@
 {
   "updates": [
     {
+      "title": "Version 1.2.2 : Ajout des styles externes",
+      "content": [
+        "Pour plus de personnalisation, il est désormais possible de préciser des feuilles de styles externes (.css) pour la visualisation.",
+        "Ajout des boutons d'actions au niveau de la page \"Questionnaire : 'xxxx' \" (Ouvrir dans Pogues, mise à jour, etc...)."
+      ]
+    },
+    {
       "title": "Version 1.2.1 : Ajout de la version de l'application",
       "content": [
         "La version de l'application est désormais affichée en haut à droite.",

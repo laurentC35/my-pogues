@@ -73,3 +73,11 @@ body .visu-form {
 .active-step span.MuiStepLabel-label {
   font-weight: bold;
 }
+
+.container-css {
+  display: flex;
+}
+
+.container-css .form-css {
+  flex-grow: 2;
+}

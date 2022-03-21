@@ -22,6 +22,7 @@ import { GenerationForm } from './form';
 import { useNavigate } from 'react-router-dom';
 import { JsonLunaticEditor } from './form/jsonLunatic';
 import { EnoParams } from './enoParams';
+import { MenuActions } from './menuActions';
 
 export const Questionnaire = () => {
   const { id } = useParams();
@@ -186,7 +187,11 @@ export const Questionnaire = () => {
             </IconButton>
           </Tooltip>
           {questionnaireFromDb && (
-            <Typography variant="h4">{`Questionnaire : "${questionnaireTitle}"`}</Typography>
+            <>
+              <Typography variant="h4">{`Questionnaire : "${questionnaireTitle}"`}</Typography>
+              <br />
+              <MenuActions questionnaireId={id} />
+            </>
           )}
           {!questionnaireFromDb && <h3>{`Questionnaire ${id} introuvable`}</h3>}
         </div>
