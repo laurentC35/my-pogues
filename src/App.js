@@ -2,16 +2,18 @@ import React, { useContext, useState } from 'react';
 import { Button, IconButton, Tooltip, Typography } from '@mui/material';
 import './App.css';
 import { EnvForm } from 'components/settings';
-import { Settings } from '@mui/icons-material';
+import { Help as HelpIcon, Settings } from '@mui/icons-material';
 import { SaveMenu } from 'components/save/menu';
 import { Outlet } from 'react-router-dom';
 import { NewsUpdate } from 'components/newsUpdate';
+import { Help } from 'components/help';
 import { AppContext } from 'MainApp';
 
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { appVersion } = useContext(AppContext);
   const [newsOpen, setNewsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   return (
     <>
@@ -33,6 +35,11 @@ function App() {
                 <Settings />
               </IconButton>
             </Tooltip>
+            <Tooltip title="Aide">
+              <IconButton onClick={() => setHelpOpen(true)}>
+                <HelpIcon />
+              </IconButton>
+            </Tooltip>
           </div>
           <div>
             <Tooltip title={`Voir le "changelog"`}>
@@ -48,6 +55,7 @@ function App() {
       </main>
       <EnvForm open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <NewsUpdate open={newsOpen} setOpen={setNewsOpen} />
+      <Help open={helpOpen} setOpen={setHelpOpen} />
     </>
   );
 }

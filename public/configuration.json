@@ -1,4 +1,5 @@
 {
+  "ghUrl": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}",
   "envs": [
     {
       "name": "Cloud",

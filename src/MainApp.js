@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useEnvs } from 'utils/hook';
+import React, { useEffect, useState } from 'react';
+import { loadConf, useEnvs } from 'utils/hook';
 import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
 import './App.css';
 import { HashRouter, Route, Routes } from 'react-router-dom';
@@ -17,6 +17,14 @@ const defaultNotif = { severity: 'success', message: '' };
 
 function MainApp() {
   const [loading, setLoading] = useState(false);
+  const [conf, setConf] = useState(null);
+  useEffect(() => {
+    const loadJsonConf = async () => {
+      const conf = await loadConf();
+      setConf(conf);
+    };
+    if (!conf) loadJsonConf();
+  }, [conf]);
 
   const env = useEnvs();
 
@@ -36,12 +44,13 @@ function MainApp() {
 
   return (
     <>
-      {environnements?.length > 0 && (
+      {conf && environnements?.length > 0 && (
         <AppContext.Provider
           value={{
             setLoading,
             openNewNotif,
             env,
+            ghUrl: conf?.ghUrl,
             appVersion,
           }}
         >

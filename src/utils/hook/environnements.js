@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from 'utils/database/db';
 
-const loadConf = async () => {
+export const loadConf = async () => {
   const response = await fetch(`${process.env.PUBLIC_URL}/configuration.json`);
   const configurationResponse = await response.json();
   return configurationResponse;

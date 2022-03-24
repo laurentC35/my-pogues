@@ -93,7 +93,7 @@ export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
       )}
       {!icon && item && (
         <MenuItem onClick={handleClick}>
-          <ListItemIcon>{startIcon}</ListItemIcon>
+          {startIcon && <ListItemIcon>{startIcon}</ListItemIcon>}
           <ListItemText>{title}</ListItemText>
         </MenuItem>
       )}
