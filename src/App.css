@@ -81,3 +81,14 @@ body .visu-form {
 .container-css .form-css {
   flex-grow: 2;
 }
+
+.title-accordion {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.update-date {
+  float: right;
+  font-style: italic;
+}

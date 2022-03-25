@@ -1,4 +1,4 @@
-import { Close, ArrowForwardIos } from '@mui/icons-material';
+import { Close, ArrowForwardIos, NewReleases, FiberNew } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import {
   Accordion as MuiAccordion,
@@ -13,7 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
+import { formatDistanceStrict, isToday } from 'date-fns';
 import { AppContext } from 'MainApp';
+import { fr } from 'date-fns/locale';
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -48,7 +50,9 @@ const AccordionSummary = styled(props => (
 }));
 
 export const NewsUpdate = ({ open, setOpen }) => {
-  const [lastVersion] = useState(window.localStorage.getItem('my-pogues-version') || '');
+  const [lastVersion, setLastVersion] = useState(
+    window.localStorage.getItem('my-pogues-version') || ''
+  );
   const [init, setInit] = useState(false);
   const [updates, setUpdates] = useState(null);
   const { appVersion } = useContext(AppContext);
@@ -71,6 +75,7 @@ export const NewsUpdate = ({ open, setOpen }) => {
   const close = () => {
     setOpen(false);
     window.localStorage.setItem('my-pogues-version', appVersion);
+    setLastVersion(window.localStorage.getItem('my-pogues-version') || '');
     setExpanded(0);
   };
 
@@ -100,16 +105,22 @@ export const NewsUpdate = ({ open, setOpen }) => {
       <DialogContent>
         {updates && (
           <>
-            {updates.map(({ title, content }, index) => {
+            {updates.map(({ title, content, date }, index) => {
               return (
                 <Accordion
                   key={`${title}-${index}`}
                   expanded={expanded === index}
                   onChange={handleChange(index)}
                 >
-                  <AccordionSummary>{`${title}${
-                    index === 0 ? '  - [Nouvelle version]' : ''
-                  } `}</AccordionSummary>
+                  <AccordionSummary>
+                    <div className="title-accordion">
+                      <span>
+                        {lastVersion !== appVersion && index === 0 && <NewReleases />}
+                        {title}
+                      </span>
+                      {index === 0 && <FiberNew className="new-icon" />}
+                    </div>
+                  </AccordionSummary>
                   <AccordionDetails>
                     <ul>
                       {content.map((el, i) => (
@@ -118,6 +129,18 @@ export const NewsUpdate = ({ open, setOpen }) => {
                         </li>
                       ))}
                     </ul>
+                    <Typography className="update-date">
+                      {isToday(new Date(date)) && "Aujourd'hui"}
+                      {!isToday(new Date(date)) &&
+                        formatDistanceStrict(new Date(date), new Date(), {
+                          //unit: 'day',
+                          locale: fr,
+                          addSuffix: true,
+                          roundingMethod: 'floor',
+                        })
+                          .split('')
+                          .map((c, k) => (k === 0 ? c.toUpperCase() : c))}
+                    </Typography>
                   </AccordionDetails>
                 </Accordion>
               );
