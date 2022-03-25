@@ -29,7 +29,7 @@ export const Help = ({ open, setOpen }) => {
   return (
     <Dialog open={open} onClose={close} fullWidth maxWidth="md">
       <DialogTitle>
-        Aide, remarques
+        Aides, remarques ?
         <IconButton
           aria-label="close"
           onClick={close}
@@ -44,8 +44,9 @@ export const Help = ({ open, setOpen }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>{`Besoin d'aide, remonter un bug ou même faire une suggestion pour améliorer l'application ?`}</DialogContentText>
+        <DialogContentText>{`Vous avez besoin d'aide, avez remarqué un bug ou vous voulez faire une suggestion pour améliorer l'application ?`}</DialogContentText>
         <DialogContentText>{`N'hesitez pas venir solliciter l'équipe en charge de cet outil.`}</DialogContentText>
+        <br />
         <DialogContentText>
           {`Venez faire part de vos remarques directement sur GitHub.`}
         </DialogContentText>
