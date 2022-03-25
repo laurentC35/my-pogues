@@ -1,6 +1,13 @@
 {
   "updates": [
     {
+      "title": "Version 1.2.3 : Évolution Eno",
+      "content": [
+        "Prise en compte de l'évolution d'Eno (ajout du paramètre obligatoire 'includeUnusedCalculatedVariables').",
+        "Ajout de la bulle d'aide / remarques / bug."
+      ]
+    },
+    {
       "title": "Version 1.2.2 : Ajout des styles externes",
       "content": [
         "Pour plus de personnalisation, il est désormais possible de préciser des feuilles de styles externes (.css) pour la visualisation.",
