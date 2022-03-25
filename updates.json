@@ -4,22 +4,26 @@
       "title": "Version 1.2.3 : Évolution Eno",
       "content": [
         "Prise en compte de l'évolution d'Eno (ajout du paramètre obligatoire 'includeUnusedCalculatedVariables').",
-        "Ajout de la bulle d'aide / remarques / bug."
-      ]
+        "Ajout de la bulle d'aide / remarques / bug.",
+        "Ajout des dates de version."
+      ],
+      "date": "2022-03-25"
     },
     {
       "title": "Version 1.2.2 : Ajout des styles externes",
       "content": [
         "Pour plus de personnalisation, il est désormais possible de préciser des feuilles de styles externes (.css) pour la visualisation.",
         "Ajout des boutons d'actions au niveau de la page \"Questionnaire : 'xxxx' \" (Ouvrir dans Pogues, mise à jour, etc...)."
-      ]
+      ],
+      "date": "2022-03-21"
     },
     {
       "title": "Version 1.2.1 : Ajout de la version de l'application",
       "content": [
         "La version de l'application est désormais affichée en haut à droite.",
         "Modification de la description de l'application."
-      ]
+      ],
+      "date": "2022-03-17"
     },
     {
       "title": "Version 1.2.0 : Ajout de la visualisation",
@@ -27,20 +31,23 @@
         "Vous pouvez désormais paramétrer des visualisations (contexte, pagination, ...).",
         "Les visualisations sont sauvegardées dans le navigateur.",
         "Pour chaque visualisation, il est possible d'éditer les métadonnées de l'enquête."
-      ]
+      ],
+      "date": "2022-03-03"
     },
     {
       "title": "Version 1.1.0 : Paramétrage de la configuration et import/export de sauvegarde.",
       "content": [
         "Vous pouvez désormais paramétrer la configuration et en ajouter de nouvelles (pour pointer vers d'autres infrastructures que celle par défaut).",
         "Ajout d'un export/import de sauvegarde sous format d'un fichier json des données saisies dans l'application."
-      ]
+      ],
+      "date": "2022-03-01"
     },
     {
       "title": "Version 1.0.0 : Première version de My-Pogues !",
       "content": [
         "Première version minimaliste, l'application permet de sauvegarder et de mettre à jour sur son navigateur les questionnaires saisis sous Pogues."
-      ]
+      ],
+      "date": "2022-02-21"
     }
   ]
 }

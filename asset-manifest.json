@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/my-pogues/static/css/main.35774ae9.css",
-    "main.js": "/my-pogues/static/js/main.1b989fad.js",
+    "main.css": "/my-pogues/static/css/main.4c773bd8.css",
+    "main.js": "/my-pogues/static/js/main.9c816c63.js",
     "static/js/787.a1ca3b13.chunk.js": "/my-pogues/static/js/787.a1ca3b13.chunk.js",
     "static/media/jsoneditor-icons.svg": "/my-pogues/static/media/jsoneditor-icons.15f2789dd231f36d43a4.svg",
     "index.html": "/my-pogues/index.html",
-    "main.35774ae9.css.map": "/my-pogues/static/css/main.35774ae9.css.map",
-    "main.1b989fad.js.map": "/my-pogues/static/js/main.1b989fad.js.map",
+    "main.4c773bd8.css.map": "/my-pogues/static/css/main.4c773bd8.css.map",
+    "main.9c816c63.js.map": "/my-pogues/static/js/main.9c816c63.js.map",
     "787.a1ca3b13.chunk.js.map": "/my-pogues/static/js/787.a1ca3b13.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.35774ae9.css",
-    "static/js/main.1b989fad.js"
+    "static/css/main.4c773bd8.css",
+    "static/js/main.9c816c63.js"
   ]
 }
