@@ -1,6 +1,14 @@
 {
   "updates": [
     {
+      "title": "Version 1.2.4 : Évolution des métadatas",
+      "content": [
+        "Prise en compte de l'ajout d'une variable de type métédata pour le context ménage.",
+        "(Variable : 'Enq_TestNonLabellise')"
+      ],
+      "date": "2022-12-07"
+    },
+    {
       "title": "Version 1.2.3 : Évolution Eno",
       "content": [
         "Prise en compte de l'évolution d'Eno (ajout du paramètre obligatoire 'includeUnusedCalculatedVariables').",
