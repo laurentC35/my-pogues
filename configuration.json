@@ -4,11 +4,11 @@
     {
       "name": "Cloud",
       "conf": {
-        "poguesUrl": "https://pogues.dev.insee.io",
-        "poguesBoUrl": "https://pogues-back-office.dev.insee.io",
-        "enoWsUrl": "https://eno-ws.dev.insee.io",
-        "stromaeUrl": "https://stromae-v2.dev.insee.io",
-        "queenUrl": "https://queen.dev.insee.io"
+        "poguesUrl": "https://pogues.demo.insee.io",
+        "poguesBoUrl": "https://pogues-back-office.demo.insee.io",
+        "enoWsUrl": "https://eno-ws.demo.insee.io",
+        "stromaeUrl": "https://stromae-v2.demo.insee.io",
+        "queenUrl": "https://queen.demo.insee.io"
       }
     }
   ]
