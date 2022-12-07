@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const variablesForWelcome = [
   { name: 'Enq_LibelleEnquete', label: `Libellé de l'enquête`, default: '' },
@@ -21,6 +21,12 @@ const variablesForWelcome = [
     default: false,
   },
   { name: 'Enq_NumeroVisa', label: `Numéro du visa de parution`, default: '' },
+  {
+    name: 'Enq_TestNonLabellise',
+    label: `Enquête non labellisée`,
+    type: 'boolean',
+    default: false,
+  },
   { name: 'Enq_AnneeVisa', label: `Année du visa`, type: 'number', default: '' },
   {
     name: 'Enq_ParutionJo',
