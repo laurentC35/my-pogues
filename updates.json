@@ -3,7 +3,7 @@
     {
       "title": "Version 1.2.4 : Évolution des métadatas",
       "content": [
-        "Prise en compte de l'ajout d'une variable de type métédata pour le context ménage.",
+        "Prise en compte de l'ajout d'une variable de type métadata pour le context ménage.",
         "(Variable : 'Enq_TestNonLabellise')"
       ],
       "date": "2022-12-07"
