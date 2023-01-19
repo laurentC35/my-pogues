@@ -1,6 +1,15 @@
 {
   "updates": [
     {
+      "title": "Version 1.3.0 : Quelques améliorations, ajout de fonctionnalités et adaptation technique",
+      "content": [
+        "Une barre de recherche permet de filtrer les résultats issues de la base de données Pogues.",
+        "Ajout d'un export des fichiers utilisés pour la visualisation.",
+        "Prise en compte du changement de format dans les identifiants des JSON lors de la persistence dans Pogues. (on retire les \"-\" des id)"
+      ],
+      "date": "2023-01-19"
+    },
+    {
       "title": "Version 1.2.4 : Évolution des métadatas",
       "content": [
         "Prise en compte de l'ajout d'une variable de type métadata pour le context ménage.",

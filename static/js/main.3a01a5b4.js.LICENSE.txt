@@ -5,8 +5,20 @@ object-assign
 */
 
 /*!
-           * Selectr 2.4.0
-           * https://github.com/Mobius1/Selectr
+
+JSZip v3.10.1 - A JavaScript class for generating and reading zip files
+<http://stuartk.com/jszip>
+
+(c) 2009-2016 Stuart Knightley <stuart [at] stuartk.com>
+Dual licenced under the MIT license or GPLv3. See https://raw.github.com/Stuk/jszip/main/LICENSE.markdown.
+
+JSZip uses the library pako released under the MIT license :
+https://github.com/nodeca/pako/blob/main/LICENSE
+*/
+
+/*!
+           * Selectr 2.4.13
+           * http://mobius.ovh/docs/selectr
            *
            * Released under the MIT license
            */
@@ -37,12 +49,24 @@ object-assign
  * Copyright (c) 2011-2022 Jos de Jong, http://jsoneditoronline.org
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @version 9.7.4
- * @date    2022-03-15
+ * @version 9.9.2
+ * @date    2022-09-20
+ */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/**
+ * @license React
+ * react-is.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
- * React Router DOM v6.2.1
+ * @remix-run/router v1.3.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -53,7 +77,7 @@ object-assign
  */
 
 /**
- * React Router v6.2.1
+ * React Router DOM v6.7.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -63,7 +87,18 @@ object-assign
  * @license MIT
  */
 
-/** @license MUI v5.4.2
+/**
+ * React Router v6.7.0
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */
+
+/** @license MUI v5.11.0
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -89,15 +124,6 @@ object-assign
 
 /** @license React v17.0.2
  * react-dom.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-/** @license React v17.0.2
- * react-is.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
