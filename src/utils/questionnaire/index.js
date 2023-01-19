@@ -17,3 +17,17 @@ export const questionnaireToSavedObject = questionnaire => {
     confs: { cloud: getLocalConf() },
   };
 };
+
+export const filterQuestionnaire = (questionnaires = [], filterStr) => {
+  return questionnaires.filter(({ title }) =>
+    `${title}`.toLowerCase().includes(filterStr.toLowerCase())
+  );
+};
+
+export const sortQuestionnairesByDate = (q1, q2) => {
+  const date1 = new Date(q1.poguesDate).getTime();
+  const date2 = new Date(q2.poguesDate).getTime();
+  if (date1 > date2) return -1;
+  if (date1 < date2) return 1;
+  return 0;
+};

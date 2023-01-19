@@ -15,18 +15,21 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Close } from '@mui/icons-material';
 import { format } from 'date-fns';
 import { AppContext } from 'MainApp';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useAPI } from 'utils/hook';
 import { questionnaireToDisplaySearch } from 'utils/questionnaire';
-import { Close } from '@mui/icons-material';
+import { FormFilter } from './formFilter';
 
 export const FormSearch = ({ open, onClose, save, conf }) => {
   const { setLoading } = useContext(AppContext);
   const [selectedQuest, setSelectedQuest] = useState(null);
 
   const [questionnaires, setQuestionnaires] = useState(null);
+
+  const [questionnairesFilterd, setQuestionnairesFiltered] = useState(null);
 
   const { getallQuestionnaires } = useAPI();
 
@@ -35,7 +38,8 @@ export const FormSearch = ({ open, onClose, save, conf }) => {
       setLoading(true);
       const { data } = await getallQuestionnaires(conf);
       if (data && Array.isArray(data)) {
-        setQuestionnaires(data);
+        setQuestionnaires(data.map(questionnaireToDisplaySearch));
+        setQuestionnairesFiltered(data.map(questionnaireToDisplaySearch));
       }
       setLoading(false);
     };
@@ -99,36 +103,42 @@ export const FormSearch = ({ open, onClose, save, conf }) => {
             </TableContainer>
           </>
         )}
-        {!selectedQuest && questionnaires && (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Titre</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {questionnaires.map(q => {
-                  const { id, title, poguesDate } = questionnaireToDisplaySearch(q);
-                  return (
-                    <TableRow key={id}>
-                      <TableCell>{id}</TableCell>
-                      <TableCell>{title}</TableCell>
-                      <TableCell>{format(new Date(poguesDate), 'dd/MM/yyyy à HH:mm:ss')}</TableCell>
-                      <TableCell>
-                        <Button onClick={() => setSelectedQuest(questionnaireToDisplaySearch(q))}>
-                          Séléctionner
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        {!selectedQuest && questionnairesFilterd && (
+          <>
+            <FormFilter
+              questionnaires={questionnaires}
+              setQuestionnairesFiltered={setQuestionnairesFiltered}
+            />
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Titre</TableCell>
+                    <TableCell>Date</TableCell>
+                    <TableCell>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {questionnairesFilterd.map(q => {
+                    const { id, title, poguesDate } = q;
+                    return (
+                      <TableRow key={id}>
+                        <TableCell>{id}</TableCell>
+                        <TableCell>{title}</TableCell>
+                        <TableCell>
+                          {format(new Date(poguesDate), 'dd/MM/yyyy à HH:mm:ss')}
+                        </TableCell>
+                        <TableCell>
+                          <Button onClick={() => setSelectedQuest(q)}>Séléctionner</Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
         )}
         {!questionnaires && <Typography>Chargement des questionnaires ...</Typography>}
       </DialogContent>
