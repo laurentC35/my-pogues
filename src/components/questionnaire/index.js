@@ -1,3 +1,4 @@
+import { AddCircle, Archive, ArrowBack, Delete, Edit, Preview } from '@mui/icons-material';
 import {
   IconButton,
   Paper,
@@ -10,18 +11,17 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuestionnaire, useVisualizationList } from 'utils/hook/database';
 import { ConfMenu } from 'components/questionnaires/ConfMenu';
-import { useAPI } from 'utils/hook';
 import { AppContext } from 'MainApp';
+import { useContext, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createZipAndDowload } from 'utils/api/dataDownload';
 import { db } from 'utils/database/db';
-import { AddCircle, ArrowBack, Delete, Edit, Preview } from '@mui/icons-material';
-import { GenerationForm } from './form';
-import { useNavigate } from 'react-router-dom';
-import { JsonLunaticEditor } from './form/jsonLunatic';
+import { useAPI } from 'utils/hook';
+import { useQuestionnaire, useVisualizationList } from 'utils/hook/database';
 import { EnoParams } from './enoParams';
+import { GenerationForm } from './form';
+import { JsonLunaticEditor } from './form/jsonLunatic';
 import { MenuActions } from './menuActions';
 
 export const Questionnaire = () => {
@@ -99,9 +99,9 @@ export const Questionnaire = () => {
       visuError = visuError || error;
       if (!error && data) {
         const { id: questId } = data;
-        const idLunatic = `${questId}-q-${visualizations.length}-${new Date().getTime()}`;
+        const idLunatic = `${questId}q${visualizations.length}${new Date().getTime()}`;
         const idMetadata = metadata
-          ? `${questId}-m-${visualizations.length}-${new Date().getTime()}`
+          ? `${questId}m${visualizations.length}${new Date().getTime()}`
           : null;
         const jsonLunatic = { ...data, id: idLunatic };
         const { error: errorQuest } = await postLunaticQuestionnaire(conf, jsonLunatic);
@@ -177,6 +177,16 @@ export const Questionnaire = () => {
       window.open(`${baseUrl}/visualize?${questionnaireParam}${metadataParam}`);
     };
 
+  const downloadPackage = visu => async () => {
+    setLoading(true);
+    const { title, jsonLunatic, metadata } = visu;
+    const finalData = [];
+    if (jsonLunatic) finalData.push({ data: jsonLunatic, fileName: 'json-lunatic' });
+    if (metadata) finalData.push({ data: metadata.value, fileName: 'json-metadata' });
+    await createZipAndDowload(finalData, title);
+    setLoading(false);
+  };
+
   return (
     <>
       <div className="as-header">
@@ -245,6 +255,11 @@ export const Questionnaire = () => {
                         icon={<Delete />}
                         title="Supprimer la visualisation"
                       />
+                      <Tooltip title={'Télécharger les fichiers de cette visualisation.'}>
+                        <IconButton onClick={downloadPackage(v)} aria-haspopup="true">
+                          {<Archive />}
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 );
