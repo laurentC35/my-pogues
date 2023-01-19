@@ -11,7 +11,7 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { EnoParamsForm } from './enoParamsForm';
 import { MetadataForm } from './metadataForm';
 import { TitleForm } from './titleForm';
@@ -66,6 +66,14 @@ export const GenerationForm = ({ open, onClose, save, conf }) => {
 
   const handleSkip = () => {
     if (currentStep !== steps.length - 1) {
+      // emptyMetadata
+      if (currentStep === 2) {
+        // No Empty metadata
+        setMetadataForm({
+          ...metadataForm,
+          inseeContext: enoParamsForm?.context.toLowerCase(),
+        });
+      }
       if (currentStep + 1 === steps.length - 1) {
         setCompleted({ ...completed, [currentStep + 1]: true });
       }
