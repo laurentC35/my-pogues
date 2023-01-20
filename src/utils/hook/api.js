@@ -2,6 +2,12 @@ import { ENO_API, POGUES_API } from 'utils/api';
 
 export const useAPI = () => {
   const token = null;
+
+  const initPogues = conf => {
+    const { poguesBoUrl } = conf;
+    return POGUES_API.init(poguesBoUrl)(token);
+  };
+
   const getQuestionnaire = (conf, id) => {
     const { poguesBoUrl } = conf;
     return POGUES_API.getQuestionnaire(poguesBoUrl)(id)(token);
@@ -58,6 +64,7 @@ export const useAPI = () => {
   };
 
   return {
+    initPogues,
     putLunaticQuestionnaire,
     postLunaticQuestionnaire,
     deleteLunaticQuestionnaire,

@@ -8,12 +8,16 @@ import {
   DialogTitle,
   IconButton,
 } from '@mui/material';
-import React, { useEffect, useState, useContext } from 'react';
 import { AppContext } from 'MainApp';
+import { useContext, useEffect, useState } from 'react';
 import { importSave } from 'utils/save';
 
 export const ImportForm = ({ open, onClose }) => {
-  const { setLoading, openNewNotif } = useContext(AppContext);
+  const {
+    setLoading,
+    openNewNotif,
+    env: { environnements },
+  } = useContext(AppContext);
 
   const [savedData, setSavedData] = useState(null);
   const [error, setError] = useState(null);
@@ -59,7 +63,7 @@ export const ImportForm = ({ open, onClose }) => {
     if (!error && savedData) {
       setLoading(true);
       try {
-        await importSave(savedData);
+        await importSave(savedData, environnements[0].conf);
         openNewNotif({ severity: 'success', message: 'Import terminé avec succès' });
       } catch (e) {
         openNewNotif({ severity: 'error', message: "Erreur lors de l'import de la sauvegarde" });

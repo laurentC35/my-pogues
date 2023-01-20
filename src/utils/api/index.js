@@ -8,6 +8,8 @@ const deleteRequest = url => token => fetcher(url, token, 'DELETE', null);
 const postXmlRequest = url => token => body => fetcherXMLFile(url, token, 'POST', body);
 const postBlobRequest = url => token => blob => fetcherForEno(url, token, blob);
 
+const init = apiUrl => token => getRequest(`${apiUrl}/api/init`)(token);
+
 const getQuestionnaire = apiUrl => id => token =>
   getRequest(`${apiUrl}/api/persistence/questionnaire/${id}`)(token);
 
@@ -48,6 +50,7 @@ const ddi2JsonLunaticSimple = apiUrl => options => ddi => token => {
 };
 
 export const POGUES_API = {
+  init,
   getQuestionnaire,
   getAllQuestionnaires,
   putQuestionnaire,

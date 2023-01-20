@@ -1,9 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from 'utils/database/db';
+import { sortQuestionnairesByDate, sortVizuByDate } from 'utils/questionnaire';
 
 export const useQuestionnaireList = () => {
   const questionnaires = useLiveQuery(() => db.questionnaire.toArray());
-  return { questionnaires };
+  return { questionnaires: (questionnaires || []).sort(sortQuestionnairesByDate) };
 };
 
 export const useQuestionnaire = id => {
@@ -16,5 +17,5 @@ export const useVisualizationList = questionnaireId => {
     () => db.visualization.where('questionnaireId').equals(questionnaireId).toArray(),
     [questionnaireId]
   );
-  return { visualizations };
+  return { visualizations: (visualizations || []).sort(sortVizuByDate) };
 };

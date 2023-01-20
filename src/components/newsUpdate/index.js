@@ -1,5 +1,4 @@
-import { Close, ArrowForwardIos, NewReleases, FiberNew } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { ArrowForwardIos, Close, FiberNew, NewReleases } from '@mui/icons-material';
 import {
   Accordion as MuiAccordion,
   AccordionDetails as MuiAccordionDetails,
@@ -12,10 +11,11 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { formatDistanceStrict, isToday } from 'date-fns';
-import { AppContext } from 'MainApp';
 import { fr } from 'date-fns/locale';
+import { AppContext } from 'MainApp';
+import { useContext, useEffect, useState } from 'react';
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -46,7 +46,6 @@ const AccordionSummary = styled(props => (
   '& .MuiAccordionSummary-content': {
     marginLeft: theme.spacing(1),
   },
-  fontWeight: 'bold',
 }));
 
 export const NewsUpdate = ({ open, setOpen }) => {
@@ -105,17 +104,18 @@ export const NewsUpdate = ({ open, setOpen }) => {
       <DialogContent>
         {updates && (
           <>
-            {updates.map(({ title, content, date }, index) => {
+            {updates.map(({ title, version, content, date }, index) => {
               return (
                 <Accordion
                   key={`${title}-${index}`}
                   expanded={expanded === index}
                   onChange={handleChange(index)}
                 >
-                  <AccordionSummary>
+                  <AccordionSummary sx={{ fontWeight: index === 0 ? 'bold' : 'normal' }}>
                     <div className="title-accordion">
                       <span>
                         {lastVersion !== appVersion && index === 0 && <NewReleases />}
+                        <b>{`Version ${version} : `}</b>
                         {title}
                       </span>
                       {index === 0 && <FiberNew className="new-icon" />}

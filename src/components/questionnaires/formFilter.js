@@ -25,6 +25,7 @@ export const FormFilter = ({ questionnaires, setQuestionnairesFiltered }) => {
       variant="standard"
       sx={{
         marginBottom: '15px',
+        marginTop: '15px',
         minWidth: '50%',
         backgroundColor: 'white',
       }}
@@ -33,7 +34,7 @@ export const FormFilter = ({ questionnaires, setQuestionnairesFiltered }) => {
         fullWidth
         id="filter"
         value={filter}
-        label={'Rechercher par nom'}
+        label={'Rechercher par titre'}
         placeholder={'Ma super enquête...'}
         onChange={handleChangeFilter}
       />

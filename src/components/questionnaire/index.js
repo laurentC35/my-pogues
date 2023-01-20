@@ -1,7 +1,16 @@
-import { AddCircle, Archive, ArrowBack, Delete, Edit, Preview } from '@mui/icons-material';
+import {
+  AddCircle,
+  Archive,
+  ArrowBack,
+  Delete,
+  Preview,
+  Update,
+  Warning,
+} from '@mui/icons-material';
 import {
   IconButton,
   Paper,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -16,13 +25,25 @@ import { AppContext } from 'MainApp';
 import { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createZipAndDowload } from 'utils/api/dataDownload';
+import { DELETED_STATE, OK_STATE, OUTDATED_STATE } from 'utils/constants';
 import { db } from 'utils/database/db';
 import { useAPI } from 'utils/hook';
 import { useQuestionnaire, useVisualizationList } from 'utils/hook/database';
+import { enoDateToJsDate } from 'utils/questionnaire';
 import { EnoParams } from './enoParams';
 import { GenerationForm } from './form';
-import { JsonLunaticEditor } from './form/jsonLunatic';
 import { MenuActions } from './menuActions';
+
+export const TableRowStyled = styled(({ stateFromCloud, ...otherProps }) => (
+  <TableRow {...otherProps} />
+))(props => ({
+  backgroundColor:
+    props.stateFromCloud === OUTDATED_STATE
+      ? props.theme.palette.warning.light
+      : props.stateFromCloud === DELETED_STATE
+      ? 'lightgray'
+      : 'white',
+}));
 
 export const Questionnaire = () => {
   const { id } = useParams();
@@ -33,7 +54,6 @@ export const Questionnaire = () => {
   const questionnaireFromDb = useQuestionnaire(id);
 
   const [visuEdit, setVisuEdit] = useState(null);
-  const [questionnaireEdit, setQuestionnaireEdit] = useState(null);
   const [confEdit, setConfEdit] = useState(null);
 
   const addNewVisu = conf => {
@@ -41,14 +61,8 @@ export const Questionnaire = () => {
     setVisuEdit(true);
   };
 
-  const editQuestionnaire = id => async conf => {
-    setConfEdit(conf);
-    const { jsonLunatic } = await db.visualization.get(id);
-    setQuestionnaireEdit({ id, json: jsonLunatic });
-  };
   const closeForm = () => {
     setVisuEdit(null);
-    setQuestionnaireEdit(null);
     setConfEdit(null);
   };
 
@@ -61,24 +75,44 @@ export const Questionnaire = () => {
     deleteLunaticQuestionnaire,
   } = useAPI();
 
-  const { title: questionnaireTitle, questionnaire } = questionnaireFromDb || {};
+  const { title: questionnaireTitle, questionnaire, poguesDate } = questionnaireFromDb || {};
 
   const { visualizations } = useVisualizationList(id);
 
-  const changeQuestionnaire = (id, questionnaireEdited) => async conf => {
+  const updateVisu = idVisu => async conf => {
     setLoading(true);
-    const visu = await db.visualization.get(id);
-    const { error } = await putLunaticQuestionnaire(conf, visu.idLunatic, questionnaireEdited);
-    if (!error) {
-      await db.visualization.put({ ...visu, jsonLunatic: questionnaireEdited });
+    let visuError = false;
+    const visu = await db.visualization.get(idVisu);
+    const { enoParams, idLunatic } = visu;
+    const { context } = enoParams;
+    const { blob: ddi } = await getDDI(conf, questionnaire);
+    if (ddi) {
+      const generation =
+        context === 'DEFAULT'
+          ? getLunaticQuestionnaireFromDDIFullOptions
+          : getLunaticQuestionnaireFromDDISimple;
+      const { data, error } = await generation(conf, ddi)(enoParams);
+      visuError = visuError || error;
+      if (!error && data) {
+        const jsonLunatic = { ...data, id: idLunatic };
+        const { error: errorQuest } = await putLunaticQuestionnaire(conf, idLunatic, jsonLunatic);
+        visuError = visuError || errorQuest;
+        if (!errorQuest)
+          await db.visualization.put({
+            ...visu,
+            jsonLunatic,
+          });
+      }
+    }
+    if (visuError) {
       openNewNotif({
-        severity: 'success',
-        message: 'Le questionnaire a bien été modifié pour la visualisation.',
+        severity: 'error',
+        message: 'Une erreur est survenue lors de la mise à jour de la visualisation.',
       });
     } else {
       openNewNotif({
-        severity: 'error',
-        message: 'Erreur lors de la modification du questionnaire.',
+        severity: 'success',
+        message: 'La visualisation a bien été mis à jour avec succés.',
       });
     }
     setLoading(false);
@@ -232,26 +266,50 @@ export const Questionnaire = () => {
             </TableHead>
             <TableBody>
               {visualizations.map(v => {
-                const { title, url, id, idLunatic, idMetadata, enoParams, metadata } = v;
+                const {
+                  title,
+                  url,
+                  id: idVisu,
+                  idLunatic,
+                  idMetadata,
+                  enoParams,
+                  metadata,
+                  jsonLunatic: { generatingDate },
+                } = v;
+
+                const outDated = new Date(poguesDate) > enoDateToJsDate(generatingDate);
                 return (
-                  <TableRow key={url}>
-                    <TableCell>{title}</TableCell>
+                  <TableRowStyled key={url} stateFromCloud={outDated ? OUTDATED_STATE : OK_STATE}>
+                    <TableCell>
+                      {outDated && (
+                        <>
+                          <Tooltip title={'Visualisation dépassée, pensez à la mettre à jour.'}>
+                            <Warning />
+                          </Tooltip>
+                          <br />
+                        </>
+                      )}
+                      {title}
+                    </TableCell>
                     <TableCell>
                       <EnoParams {...enoParams} />
                     </TableCell>
                     <TableCell>
+                      {outDated && (
+                        <ConfMenu
+                          action={updateVisu(idVisu)}
+                          icon={<Update />}
+                          title="Mettre à jour la visualisation"
+                        />
+                      )}
                       <ConfMenu
                         action={visuOnStomae({ url, enoParams, metadata })}
                         icon={<Preview />}
                         title="Visualiser le questionnaire"
                       />
+
                       <ConfMenu
-                        action={editQuestionnaire(id)}
-                        icon={<Edit />}
-                        title="Modifier manuellement le questionnaire"
-                      />
-                      <ConfMenu
-                        action={deleteVisu({ id, idLunatic, idMetadata })}
+                        action={deleteVisu({ id: idVisu, idLunatic, idMetadata })}
                         icon={<Delete />}
                         title="Supprimer la visualisation"
                       />
@@ -261,7 +319,7 @@ export const Questionnaire = () => {
                         </IconButton>
                       </Tooltip>
                     </TableCell>
-                  </TableRow>
+                  </TableRowStyled>
                 );
               })}
             </TableBody>
@@ -271,16 +329,6 @@ export const Questionnaire = () => {
       <br />
       {questionnaireFromDb && <ConfMenu action={addNewVisu} title={'Ajouter une visualisation'} />}
       {visuEdit && <GenerationForm open onClose={closeForm} conf={confEdit} save={createNewVisu} />}
-      {questionnaireEdit && (
-        <JsonLunaticEditor
-          open
-          onClose={closeForm}
-          conf={confEdit}
-          save={changeQuestionnaire}
-          id={questionnaireEdit.id}
-          jsonLunatic={questionnaireEdit.json}
-        />
-      )}
     </>
   );
 };

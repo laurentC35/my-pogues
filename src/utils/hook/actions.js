@@ -62,7 +62,7 @@ export const useActions = () => {
     try {
       const { data } = await getQuestionnaire(conf, id);
       if (data) {
-        await db.questionnaire.put(questionnaireToSavedObject(data));
+        await db.questionnaire.put(questionnaireToSavedObject(data, conf));
         success = true;
       }
     } catch (e) {}

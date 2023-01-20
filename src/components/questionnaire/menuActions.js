@@ -1,15 +1,15 @@
-import { styled, alpha } from '@mui/material/styles';
-import { Button, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import React, { useState } from 'react';
 import {
   Backup,
-  CloudDownload,
   Download,
   FileUpload,
   KeyboardArrowDown,
+  Update,
   Visibility,
 } from '@mui/icons-material';
+import { Button, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 import { ConfMenu } from 'components/questionnaires/ConfMenu';
+import { useState } from 'react';
 import { useActions } from 'utils/hook';
 
 const StyledMenu = styled(props => (
@@ -101,7 +101,7 @@ export const MenuActions = ({ questionnaireId }) => {
           item
           action={updateQuestionnaireFromPogues(questionnaireId)}
           title={'Mettre à jour la sauvegarde'}
-          startIcon={<CloudDownload />}
+          startIcon={<Update />}
         />
         <ConfMenu
           item

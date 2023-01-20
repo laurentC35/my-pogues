@@ -1,14 +1,14 @@
-import { styled, alpha } from '@mui/material/styles';
+import { KeyboardArrowDown } from '@mui/icons-material';
 import { Button, Menu } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { alpha, styled } from '@mui/material/styles';
+import { AppContext } from 'MainApp';
+import { useContext, useState } from 'react';
 import { db } from 'utils/database/db';
 import { useAPI } from 'utils/hook';
 import { questionnaireToSavedObject } from 'utils/questionnaire';
-import { KeyboardArrowDown } from '@mui/icons-material';
-import { FormId } from './formId';
-import { AppContext } from 'MainApp';
-import { FormSearch } from './formSearch';
 import { ConfMenu } from './ConfMenu';
+import { FormId } from './formId';
+import { FormSearch } from './formSearch';
 
 const StyledMenu = styled(props => (
   <Menu
@@ -71,7 +71,7 @@ export const QuestionnaireForm = () => {
         setLoading(true);
         const { data } = await getQuestionnaire(conf, id);
         if (data) {
-          await db.questionnaire.put(questionnaireToSavedObject(data));
+          await db.questionnaire.put(questionnaireToSavedObject(data, conf));
           openNewNotif({ severity: 'success', message: 'Questionnaire enregistré avec succès' });
         } else
           openNewNotif({

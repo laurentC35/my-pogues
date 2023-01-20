@@ -1,4 +1,3 @@
-import { styled, alpha } from '@mui/material/styles';
 import {
   Button,
   IconButton,
@@ -8,8 +7,9 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { alpha, styled } from '@mui/material/styles';
 import { AppContext } from 'MainApp';
+import { useContext, useState } from 'react';
 
 const StyledMenu = styled(props => (
   <Menu
@@ -48,7 +48,7 @@ const StyledMenu = styled(props => (
   },
 }));
 
-export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
+export const ConfMenu = ({ icon, startIcon, title, action, from, item, disabled }) => {
   const {
     env: { environnements },
   } = useContext(AppContext);
@@ -68,6 +68,7 @@ export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
       {!startIcon && icon && (
         <Tooltip title={title}>
           <IconButton
+            disabled={disabled}
             onClick={handleClick}
             id="button-title"
             aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -80,6 +81,7 @@ export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
       )}
       {!icon && !item && (
         <Button
+          disabled={disabled}
           onClick={handleClick}
           startIcon={startIcon}
           disableElevation
@@ -92,7 +94,7 @@ export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
         </Button>
       )}
       {!icon && item && (
-        <MenuItem onClick={handleClick}>
+        <MenuItem disabled={disabled} onClick={handleClick}>
           {startIcon && <ListItemIcon>{startIcon}</ListItemIcon>}
           <ListItemText>{title}</ListItemText>
         </MenuItem>
@@ -109,6 +111,7 @@ export const ConfMenu = ({ icon, startIcon, title, action, from, item }) => {
         {environnements.map(({ name, conf }) => (
           <MenuItem
             key={name}
+            disabled={disabled}
             onClick={() => {
               handleClose();
               action(conf);

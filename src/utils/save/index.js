@@ -9,9 +9,16 @@ export const exportSave = async (e, fileName) => {
   downloadDataAsJson({ questionnaires, envs, visualizations }, finalFileName);
 };
 
-export const importSave = async data => {
+export const importSave = async (data, defaultConf) => {
   const { questionnaires, envs, visualizations } = data;
-  if (questionnaires) await db.questionnaire.bulkPut(questionnaires);
+  if (questionnaires) {
+    const newQuestionnaire = questionnaires.map(q => {
+      const { conf, confs, ...other } = q;
+      if (!conf) return { conf: defaultConf, ...other };
+      return other;
+    });
+    await db.questionnaire.bulkPut(newQuestionnaire);
+  }
   if (envs) await db.env.bulkPut(envs);
   if (visualizations) await db.visualization.bulkPut(visualizations);
 };
