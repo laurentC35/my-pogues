@@ -1,13 +1,22 @@
-import React from 'react';
+import { valueOfEndQuestion } from 'utils/questionnaire';
 import {
   contextOptions,
+  endGenericQuestionsOptions,
   modeOptions,
   paginationOptions,
   questNumOptions,
   seqNumOptions,
 } from '../form/enoParamsForm';
 
-export const EnoParams = ({ mode, pagination, questNum, seqNum, context }) => (
+export const EnoParams = ({
+  mode,
+  pagination,
+  questNum,
+  seqNum,
+  context,
+  commentQuest,
+  timeQuest,
+}) => (
   <>
     {context !== 'DEFAULT' && (
       <>
@@ -34,6 +43,14 @@ export const EnoParams = ({ mode, pagination, questNum, seqNum, context }) => (
         <br />
         <b>Numérotation des séquences : </b>
         {seqNumOptions.find(({ value }) => value === seqNum)?.label}
+        <br />
+        <b>Question de fin : </b>
+        {
+          endGenericQuestionsOptions.find(
+            ({ value }) => value === valueOfEndQuestion({ commentQuest, timeQuest })
+          )?.label
+        }
+        <br />
       </>
     )}
   </>

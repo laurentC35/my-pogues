@@ -1,3 +1,10 @@
+import {
+  COMMENT_QUESTION,
+  COMMENT_TIME_QUESTION,
+  NONE_QUESTION,
+  TIME_QUESTION,
+} from 'utils/constants';
+
 export const questionnaireToDisplaySearch = questionnaire => {
   const { id, Label, lastUpdatedDate } = questionnaire;
   return {
@@ -14,6 +21,13 @@ export const questionnaireToSavedObject = (questionnaire, conf) => {
     saveDate: new Date().getTime(),
     conf,
   };
+};
+
+export const valueOfEndQuestion = ({ commentQuest, timeQuest }) => {
+  if (!commentQuest && !timeQuest) return NONE_QUESTION;
+  if (commentQuest && timeQuest) return COMMENT_TIME_QUESTION;
+  if (commentQuest && !timeQuest) return COMMENT_QUESTION;
+  return TIME_QUESTION;
 };
 
 export const filterQuestionnaire = (questionnaires = [], filterStr) => {

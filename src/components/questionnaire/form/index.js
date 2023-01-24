@@ -22,6 +22,8 @@ const initialFormData = {
   questNum: 'ALL', // 'ALL' / 'MODULE' /  'NO_NUMBER'
   seqNum: true, // true / false
   context: 'HOUSEHOLD', // 'DEFAULT' / 'HOUSEHOLD' / 'BUSINESS'
+  commentQuest: false, // true / false
+  timeQuest: false, // true / false
 };
 
 const steps = ['Titre', 'Paramètres', 'Métadonnées', 'Fin'];

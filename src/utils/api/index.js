@@ -38,9 +38,9 @@ const getDDIQuestionnaire = apiUrl => body => token =>
   postXmlRequest(`${apiUrl}/api/transform/visualize-ddi`)(token)(body);
 
 const ddi2JsonLunaticFullOptions = apiUrl => options => ddi => token => {
-  const { mode, pagination, questNum, seqNum, context } = options;
+  const { mode, pagination, questNum, seqNum, context, commentQuest, timeQuest } = options;
   return postBlobRequest(
-    `${apiUrl}/questionnaire/ddi-2-lunatic-json/${mode}?parsingXpathVTL=false&Pagination=${pagination}&QuestNum=${questNum}&SeqNum=${seqNum}&context=${context}&AddFilterResult=true&PreQuestSymbol=false&CommentQuestion=true&includeUnusedCalculatedVariables=false`
+    `${apiUrl}/questionnaire/ddi-2-lunatic-json/${mode}?parsingXpathVTL=false&Pagination=${pagination}&QuestNum=${questNum}&SeqNum=${seqNum}&context=${context}&AddFilterResult=true&PreQuestSymbol=false&CommentQuestion=${commentQuest}&ResponseTimeQuestion=${timeQuest}&includeUnusedCalculatedVariables=false`
   )(token)(ddi);
 };
 

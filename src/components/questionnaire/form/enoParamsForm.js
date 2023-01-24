@@ -1,5 +1,11 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import React from 'react';
+import {
+  COMMENT_QUESTION,
+  COMMENT_TIME_QUESTION,
+  NONE_QUESTION,
+  TIME_QUESTION,
+} from 'utils/constants';
+import { valueOfEndQuestion } from 'utils/questionnaire';
 
 export const modeOptions = [
   { value: 'CAWI', label: 'CAWI' },
@@ -27,10 +33,29 @@ export const contextOptions = [
   { value: 'BUSINESS', label: 'Entreprise' },
 ];
 
+export const endGenericQuestionsOptions = [
+  { value: NONE_QUESTION, label: 'Aucune question' },
+  { value: COMMENT_TIME_QUESTION, label: 'Commentaire + temps de réponse' },
+  { value: COMMENT_QUESTION, label: 'Commentaire' },
+  { value: TIME_QUESTION, label: 'Temps de réponse' },
+];
+
 export const EnoParamsForm = ({ enoParams, setEnoParms }) => {
   const handleChange = e => {
     const { name, value } = e.target;
     setEnoParms({ ...enoParams, [name]: value });
+  };
+
+  const handleChangeEndQuestions = e => {
+    const { value } = e.target;
+    if (value === NONE_QUESTION)
+      setEnoParms({ ...enoParams, commentQuest: false, timeQuest: false });
+    if (value === COMMENT_TIME_QUESTION)
+      setEnoParms({ ...enoParams, commentQuest: true, timeQuest: true });
+    if (value === COMMENT_QUESTION)
+      setEnoParms({ ...enoParams, commentQuest: true, timeQuest: false });
+    if (value === TIME_QUESTION)
+      setEnoParms({ ...enoParams, commentQuest: false, timeQuest: true });
   };
 
   return (
@@ -118,6 +143,25 @@ export const EnoParamsForm = ({ enoParams, setEnoParms }) => {
               onChange={handleChange}
             >
               {questNumOptions.map(({ value, label }) => (
+                <MenuItem key={value} value={value}>
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <br />
+          <FormControl fullWidth className="form-element">
+            <InputLabel id="endQuest">Questions de fin génériques</InputLabel>
+            <Select
+              labelId="endQuest"
+              id="endQuest-simple-select"
+              value={valueOfEndQuestion(enoParams)}
+              label="Questions de fin"
+              name="endQuest"
+              onChange={handleChangeEndQuestions}
+            >
+              {endGenericQuestionsOptions.map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
                   {label}
                 </MenuItem>

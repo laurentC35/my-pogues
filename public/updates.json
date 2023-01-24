@@ -1,6 +1,12 @@
 {
   "updates": [
     {
+      "title": "Ajout de paramètre de génération",
+      "version": "1.4.2",
+      "content": ["Ajout des paramètres de questions de fin (temps de réponse et commentaire)."],
+      "date": "2023-01-24"
+    },
+    {
       "title": "Amélioration de la synchronisation avec Pogues",
       "version": "1.4.1",
       "content": [
