@@ -2,7 +2,7 @@
   "name": "my-pogues",
   "version": "1.4.2",
   "private": true,
-  "homepage": "https://laurentC35.github.io/my-pogues",
+  "homepage": "/my-pogues",
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
