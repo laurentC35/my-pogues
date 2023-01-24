@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/my-pogues/static/css/main.0131d580.css",
-    "main.js": "/my-pogues/static/js/main.1f9e2f7f.js",
+    "main.js": "/my-pogues/static/js/main.65aa9d62.js",
     "static/js/787.a1ca3b13.chunk.js": "/my-pogues/static/js/787.a1ca3b13.chunk.js",
     "index.html": "/my-pogues/index.html",
     "main.0131d580.css.map": "/my-pogues/static/css/main.0131d580.css.map",
-    "main.1f9e2f7f.js.map": "/my-pogues/static/js/main.1f9e2f7f.js.map",
+    "main.65aa9d62.js.map": "/my-pogues/static/js/main.65aa9d62.js.map",
     "787.a1ca3b13.chunk.js.map": "/my-pogues/static/js/787.a1ca3b13.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0131d580.css",
-    "static/js/main.1f9e2f7f.js"
+    "static/js/main.65aa9d62.js"
   ]
 }
