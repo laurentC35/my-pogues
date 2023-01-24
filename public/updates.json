@@ -2,7 +2,7 @@
   "updates": [
     {
       "title": "Amélioration de la synchronisation avec Pogues",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "content": [
         "L'application vérifie désormais s'il existe une version plus récente dans Pogues des questionnaires sauvegardés localement. (Les dates de sauvegarde sont comparées)",
         "Elle vérifie également si une visualisation est obsolète vis à vis du questionnaire sauvegardé localement. Elle propose la mise à jour de ces visualisations (regénération via Eno)."

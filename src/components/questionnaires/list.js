@@ -35,7 +35,7 @@ export const QuestionnaireList = () => {
   const {
     setLoading,
     openNewNotif,
-    env: { environnements },
+    env: { defaultConf },
   } = useContext(AppContext);
   const {
     createQuestionnaire,
@@ -125,7 +125,8 @@ export const QuestionnaireList = () => {
             } else
               await db.questionnaire.put({
                 ...questionnaire,
-                stateFromCloud: OFFLINE_STATE,
+                conf: defaultConf,
+                stateFromCloud: OK_STATE,
               });
           };
 
@@ -145,7 +146,7 @@ export const QuestionnaireList = () => {
     setSuccessMessage,
     getQuestionnaire,
     setErrorMessage,
-    environnements,
+    defaultConf,
     initPogues,
     setLoading,
   ]);
