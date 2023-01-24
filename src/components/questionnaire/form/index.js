@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { DataForm } from './dataForm';
 import { EnoParamsForm } from './enoParamsForm';
 import { MetadataForm } from './metadataForm';
 import { TitleForm } from './titleForm';
@@ -26,7 +27,7 @@ const initialFormData = {
   timeQuest: false, // true / false
 };
 
-const steps = ['Titre', 'Paramètres', 'Métadonnées', 'Fin'];
+const steps = ['Titre', 'Paramètres', 'Métadonnées', 'Données', 'Fin'];
 
 export const GenerationForm = ({ open, onClose, save, conf }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -35,11 +36,12 @@ export const GenerationForm = ({ open, onClose, save, conf }) => {
   const [titleForm, setTitleForm] = useState('');
   const [enoParamsForm, setEnoParmsForm] = useState(initialFormData);
   const [metadataForm, setMetadataForm] = useState(null);
+  const [dataForm, setDataForm] = useState(null);
 
   const [error, setError] = useState(null);
 
   const globaleSave = () => {
-    save(titleForm, enoParamsForm, metadataForm)(conf);
+    save(titleForm, enoParamsForm, metadataForm, dataForm.lunaticData)(conf);
     onClose();
   };
 
@@ -128,6 +130,7 @@ export const GenerationForm = ({ open, onClose, save, conf }) => {
               setMetadata={setMetadataForm}
             />
           )}
+          {currentStep === 3 && <DataForm data={dataForm} setData={setDataForm} />}
           {currentStep === steps.length - 1 && (
             <>
               <Typography>

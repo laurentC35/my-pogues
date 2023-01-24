@@ -1,15 +1,24 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
-export const downloadDataAsJson = (data, fileName) => {
-  const dataStr =
-    'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, '\t'));
+const downloadFile = (finalData, fileName) => {
   const downloadAnchorNode = document.createElement('a');
-  downloadAnchorNode.setAttribute('href', dataStr);
-  downloadAnchorNode.setAttribute('download', fileName + '.json');
+  downloadAnchorNode.setAttribute('href', finalData);
+  downloadAnchorNode.setAttribute('download', fileName);
   document.body.appendChild(downloadAnchorNode); // required for firefox
   downloadAnchorNode.click();
   downloadAnchorNode.remove();
+};
+
+export const downloadDataAsJson = (data, fileName) => {
+  const dataStr =
+    'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, '\t'));
+  downloadFile(dataStr, `${fileName}.json`);
+};
+
+export const downloadDataAsCSV = (data, fileName) => {
+  const dataStr = 'data:text/csv;charset=utf-8,' + encodeURIComponent(data);
+  downloadFile(dataStr, `${fileName}.csv`);
 };
 
 /**

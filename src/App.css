@@ -65,6 +65,11 @@ body .visu-form {
   width: max-content;
 }
 
+.center-button.data {
+  display: flex;
+  justify-content: space-around;
+}
+
 .img-logo,
 .center-button {
   text-align: center;

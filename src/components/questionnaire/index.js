@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { ConfMenu } from 'components/questionnaires/ConfMenu';
 import { AppContext } from 'MainApp';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createZipAndDowload } from 'utils/api/dataDownload';
 import { DELETED_STATE, OK_STATE, OUTDATED_STATE } from 'utils/constants';
@@ -44,6 +44,8 @@ export const TableRowStyled = styled(({ stateFromCloud, ...otherProps }) => (
       ? 'lightgray'
       : 'white',
 }));
+
+export const QuestionnaireContext = React.createContext();
 
 export const Questionnaire = () => {
   const { id } = useParams();
@@ -118,7 +120,7 @@ export const Questionnaire = () => {
     setLoading(false);
   };
 
-  const createNewVisu = (title, enoParams, metadata) => async conf => {
+  const createNewVisu = (title, enoParams, metadata, lunaticData) => async conf => {
     const { poguesBoUrl } = conf;
     const { context } = enoParams;
     let visuError = false;
@@ -137,21 +139,31 @@ export const Questionnaire = () => {
         const idMetadata = metadata
           ? `${questId}m${visualizations.length}${new Date().getTime()}`
           : null;
+        const idLunaticData = lunaticData
+          ? `${questId}d${visualizations.length}${new Date().getTime()}`
+          : null;
         const jsonLunatic = { ...data, id: idLunatic };
         const { error: errorQuest } = await postLunaticQuestionnaire(conf, jsonLunatic);
+        visuError = visuError || errorQuest;
 
-        let errorMetadata = false;
-        if (!errorQuest && metadata) {
+        if (!visuError && metadata) {
           const newMetadata = { ...metadata, id: idMetadata };
           const { error: errorMet } = await postLunaticQuestionnaire(conf, newMetadata);
-          errorMetadata = errorMet;
+
+          visuError = visuError || errorMet;
         }
-        visuError = visuError || errorQuest || errorMetadata;
-        if (!errorQuest && !errorMetadata)
+        if (!visuError && lunaticData) {
+          const newLunaticData = { ...lunaticData, id: idLunaticData };
+          const { error: errorData } = await postLunaticQuestionnaire(conf, newLunaticData);
+          visuError = visuError || errorData;
+        }
+
+        if (!visuError)
           await db.visualization.put({
             questionnaireId: id,
             idLunatic,
             idMetadata,
+            idLunaticData,
             title,
             jsonLunatic,
             enoParams,
@@ -159,6 +171,12 @@ export const Questionnaire = () => {
               ? {
                   url: `${poguesBoUrl}/api/persistence/questionnaire/json-lunatic/${idMetadata}`,
                   value: metadata,
+                }
+              : null,
+            lunaticData: lunaticData
+              ? {
+                  url: `${poguesBoUrl}/api/persistence/questionnaire/json-lunatic/${idLunaticData}`,
+                  value: lunaticData,
                 }
               : null,
             url: `${poguesBoUrl}/api/persistence/questionnaire/json-lunatic/${idLunatic}`,
@@ -180,14 +198,18 @@ export const Questionnaire = () => {
   };
 
   const deleteVisu =
-    ({ id, idLunatic, idMetadata }) =>
+    ({ id, idLunatic, idMetadata, idLunaticData }) =>
     async conf => {
       let error = false;
       const { error: qError } = await deleteLunaticQuestionnaire(conf, idLunatic);
       error = error || qError;
-      if (!qError && idMetadata) {
+      if (!error && idMetadata) {
         const { error: mError } = await deleteLunaticQuestionnaire(conf, idMetadata);
         error = error || mError;
+      }
+      if (!error && idLunaticData) {
+        const { error: dError } = await deleteLunaticQuestionnaire(conf, idLunaticData);
+        error = error || dError;
       }
       if (error) {
         openNewNotif({
@@ -201,28 +223,32 @@ export const Questionnaire = () => {
     };
 
   const visuOnStomae =
-    ({ enoParams, url, metadata }) =>
+    ({ enoParams, url, metadata, lunaticData }) =>
     conf => {
       const { stromaeUrl, queenUrl } = conf;
       const { mode } = enoParams;
       const baseUrl = mode === 'CAPI_CATI' ? `${queenUrl}/queen` : stromaeUrl;
       const questionnaireParam = `questionnaire=${encodeURIComponent(url)}`;
       const metadataParam = metadata?.url ? `&metadata=${encodeURIComponent(metadata?.url)}` : '';
-      window.open(`${baseUrl}/visualize?${questionnaireParam}${metadataParam}`);
+      const lunaticDataParam = lunaticData?.url
+        ? `&data=${encodeURIComponent(lunaticData?.url)}`
+        : '';
+      window.open(`${baseUrl}/visualize?${questionnaireParam}${metadataParam}${lunaticDataParam}`);
     };
 
   const downloadPackage = visu => async () => {
     setLoading(true);
-    const { title, jsonLunatic, metadata } = visu;
+    const { title, jsonLunatic, metadata, lunaticData } = visu;
     const finalData = [];
     if (jsonLunatic) finalData.push({ data: jsonLunatic, fileName: 'json-lunatic' });
     if (metadata) finalData.push({ data: metadata.value, fileName: 'json-metadata' });
+    if (lunaticData) finalData.push({ data: lunaticData.value, fileName: 'json-data' });
     await createZipAndDowload(finalData, title);
     setLoading(false);
   };
 
   return (
-    <>
+    <QuestionnaireContext.Provider value={{ questionnaireTitle, questionnaire }}>
       <div className="as-header">
         <div className="left">
           <Tooltip title={'Retour'}>
@@ -272,8 +298,10 @@ export const Questionnaire = () => {
                   id: idVisu,
                   idLunatic,
                   idMetadata,
+                  idLunaticData,
                   enoParams,
                   metadata,
+                  lunaticData,
                   jsonLunatic: { generatingDate },
                 } = v;
 
@@ -303,13 +331,13 @@ export const Questionnaire = () => {
                         />
                       )}
                       <ConfMenu
-                        action={visuOnStomae({ url, enoParams, metadata })}
+                        action={visuOnStomae({ url, enoParams, metadata, lunaticData })}
                         icon={<Preview />}
                         title="Visualiser le questionnaire"
                       />
 
                       <ConfMenu
-                        action={deleteVisu({ id: idVisu, idLunatic, idMetadata })}
+                        action={deleteVisu({ id: idVisu, idLunatic, idMetadata, idLunaticData })}
                         icon={<Delete />}
                         title="Supprimer la visualisation"
                       />
@@ -329,6 +357,6 @@ export const Questionnaire = () => {
       <br />
       {questionnaireFromDb && <ConfMenu action={addNewVisu} title={'Ajouter une visualisation'} />}
       {visuEdit && <GenerationForm open onClose={closeForm} conf={confEdit} save={createNewVisu} />}
-    </>
+    </QuestionnaireContext.Provider>
   );
 };
