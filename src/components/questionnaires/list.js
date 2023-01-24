@@ -125,7 +125,7 @@ export const QuestionnaireList = () => {
             } else
               await db.questionnaire.put({
                 ...questionnaire,
-                conf: defaultConf,
+                conf: defaultConf.conf,
                 stateFromCloud: OK_STATE,
               });
           };
