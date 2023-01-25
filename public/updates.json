@@ -1,10 +1,18 @@
 {
   "updates": [
     {
+      "title": "Nouvelle fonctionnalité - données de personnalisation",
+      "version": "1.5.0",
+      "content": [
+        "Désormais lors de la création d'une visualisation, vous pouvez charger un fichier CSV de données pour pré-remplir le questionnaire !"
+      ],
+      "date": "2023-01-24"
+    },
+    {
       "title": "Ajout de paramètre de génération",
       "version": "1.4.2",
       "content": ["Ajout des paramètres de questions de fin (temps de réponse et commentaire)."],
-      "date": "2023-01-24"
+      "date": "2023-01-23"
     },
     {
       "title": "Amélioration de la synchronisation avec Pogues",
