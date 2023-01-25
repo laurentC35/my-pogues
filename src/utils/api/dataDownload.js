@@ -4,6 +4,7 @@ import JSZip from 'jszip';
 const downloadFile = (finalData, fileName) => {
   const downloadAnchorNode = document.createElement('a');
   downloadAnchorNode.setAttribute('href', finalData);
+  downloadAnchorNode.setAttribute('target', '_blank');
   downloadAnchorNode.setAttribute('download', fileName);
   document.body.appendChild(downloadAnchorNode); // required for firefox
   downloadAnchorNode.click();

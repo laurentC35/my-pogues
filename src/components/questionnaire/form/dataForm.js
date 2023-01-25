@@ -1,5 +1,6 @@
-import { CheckCircle, Download } from '@mui/icons-material';
+import { CheckCircle, Download, UploadFile } from '@mui/icons-material';
 import {
+  Alert,
   Button,
   FormControl,
   FormGroup,
@@ -8,55 +9,52 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import { useContext, useState } from 'react';
+import { Box } from '@mui/system';
+import { useCallback, useContext, useState } from 'react';
 import { downloadDataAsCSV } from 'utils/api/dataDownload';
-import { checkCSV, poguesQuestionnaireToCsv, transformDataCSVToDataJSON } from 'utils/data';
+import {
+  checkCSV,
+  checkJson,
+  poguesQuestionnaireToCsv,
+  transformDataCSVToDataJSON,
+} from 'utils/data';
 import { QuestionnaireContext } from '..';
 
 export const DataForm = ({ data, setData }) => {
   const { questionnaireTitle, questionnaire } = useContext(QuestionnaireContext);
   const [error, setError] = useState(null);
-  const [wellUpload, setWellUpload] = useState(data?.name);
   const [jsonUpload, setJsonUpload] = useState(false);
 
   const handleChange = event => {
+    setData(null);
     setJsonUpload(event.target.checked);
   };
 
-  const readCSV = event => {
-    setError(null);
-    setWellUpload(false);
-    const {
-      target: { files },
-    } = event;
-    if (files.length > 0) {
-      const csv = files[0];
-      const fileReader = new FileReader();
-      fileReader.readAsText(csv);
-      fileReader.onload = () => {
-        const text = fileReader.result;
-        const valid = checkCSV(text);
-        if (valid) {
-          const lunaticData = transformDataCSVToDataJSON(text);
-          setData({ name: csv.name, lunaticData });
-          setWellUpload(csv.name);
-        } else {
-          setError(
-            <>
-              <p>{`Le fichier "${csv.name}" est invalide.`}</p>
-              <p>{`Le fichier doit être sous format ".csv" en encodage UTF-8 de la forme :`}</p>
-              <code>
-                <div>Parent;Value;Label</div>
-                <div>;1;libellé 1</div>
-                <div>;2;libellé 2</div>
-              </code>
-              <p>{`Le séparateur doit être le point-virgule : ";" .`}</p>
-            </>
-          );
-        }
-      };
-    }
-  };
+  const readFile = useCallback(
+    event => {
+      setError(null);
+      setData(null);
+      const {
+        target: { files },
+      } = event;
+      if (files.length > 0) {
+        const file = files[0];
+        const fileReader = new FileReader();
+        fileReader.readAsText(file);
+        fileReader.onload = () => {
+          const text = fileReader.result;
+          const valid = jsonUpload ? checkJson() : checkCSV(text);
+          if (valid) {
+            const lunaticData = jsonUpload ? JSON.parse(text) : transformDataCSVToDataJSON(text);
+            setData({ name: file.name, lunaticData });
+          } else {
+            setError(true);
+          }
+        };
+      }
+    },
+    [jsonUpload, setData]
+  );
 
   const getCSVExample = () => {
     const csvData = poguesQuestionnaireToCsv(questionnaire);
@@ -67,7 +65,7 @@ export const DataForm = ({ data, setData }) => {
   };
 
   return (
-    <div className="center-button">
+    <div>
       <FormControl component="fieldset" variant="standard">
         <FormLabel component="legend">Type de format de données</FormLabel>
         <FormGroup>
@@ -78,38 +76,61 @@ export const DataForm = ({ data, setData }) => {
           </Stack>
         </FormGroup>
       </FormControl>
-      {!jsonUpload && (
-        <div className="center-button data">
+
+      <Alert severity={jsonUpload ? 'warning' : 'info'}>
+        {jsonUpload && (
+          <>
+            <div>
+              Le format de données JSON sera bientôt disponible. Il correspondra à celui
+              exporté/téléchargé en fin de visualisation.
+            </div>
+            <div>
+              Vous pourrez donc, compléter les données d'un questionnaire vierge comme bon vous
+              semble et importer ensuite les données ici.
+            </div>
+          </>
+        )}
+        {!jsonUpload && (
+          <>
+            <div>Le format de données CSV est généré à partir des variables du questionnaires.</div>
+            <div>
+              En cliquant sur "Exemple de données CSV", vous obtiendrez un fichier CSV correspondant
+              à votre questionnaire que vous pourrez compléter/modifier pour ensuite le charger ici.
+            </div>
+          </>
+        )}
+      </Alert>
+      <br />
+      <br />
+      <div className="center-button data">
+        {!jsonUpload && (
           <Button startIcon={<Download />} variant="contained" onClick={getCSVExample}>
             Exemple de données CSV
           </Button>
+        )}
+        {!jsonUpload && (
           <Button
             variant="contained"
-            startIcon={wellUpload ? <CheckCircle /> : null}
+            startIcon={data ? <CheckCircle /> : <UploadFile />}
             component="label"
-            color={wellUpload ? 'success' : 'primary'}
+            color={data ? 'success' : 'primary'}
           >
-            Charger le CSV
-            <input hidden accept=".csv" type="file" onChange={readCSV} />
+            {jsonUpload ? 'Charger le JSON' : 'Charger le CSV'}
+            <input hidden accept={jsonUpload ? '.json' : '.csv'} type="file" onChange={readFile} />
           </Button>
-        </div>
-      )}
-
-      {wellUpload && (
-        <>
+        )}
+      </div>
+      {(data || error) && (
+        <Box sx={{ margin: 'auto', width: '70%' }}>
           <br />
           <br />
-          <Typography>{`Le fichier de données "${wellUpload}" a bien été chargé.`}</Typography>
-        </>
-      )}
-      {error && (
-        <>
-          <br />
-          <br />
-          <Typography
-            color={'error'}
-          >{`Une erreur est survenu lors du chargement du fichier de données. Veuillez vérifier son format.`}</Typography>
-        </>
+          {data && (
+            <Alert severity="success">{`Le fichier de données "${data.name}" a bien été chargé.`}</Alert>
+          )}
+          {error && (
+            <Alert severity="error">{`Une erreur est survenu lors du chargement du fichier de données. Veuillez vérifier son format et recommencer.`}</Alert>
+          )}
+        </Box>
       )}
     </div>
   );

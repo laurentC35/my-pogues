@@ -5,12 +5,21 @@ const tranformData = data => {
   return null;
 };
 
-export const checkCSV = csv => {
-  const linesOfCSV = csv.split('\n');
+export const checkCSV = csvText => {
+  const linesOfCSV = csvText.split('\n');
   const [headers] = linesOfCSV;
   const headersName = headers.split(';');
   if (headersName.length !== 4) return false;
   return true;
+};
+
+export const checkJson = jsonText => {
+  try {
+    const lunaticData = JSON.parse(jsonText);
+    return lunaticData && lunaticData.stateData && lunaticData.data;
+  } catch (e) {
+    return false;
+  }
 };
 
 export const transformDataCSVToDataJSON = csv => {

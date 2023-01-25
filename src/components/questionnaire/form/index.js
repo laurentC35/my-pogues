@@ -41,7 +41,7 @@ export const GenerationForm = ({ open, onClose, save, conf }) => {
   const [error, setError] = useState(null);
 
   const globaleSave = () => {
-    save(titleForm, enoParamsForm, metadataForm, dataForm.lunaticData)(conf);
+    save(titleForm, enoParamsForm, metadataForm, dataForm?.lunaticData)(conf);
     onClose();
   };
 
@@ -146,15 +146,17 @@ export const GenerationForm = ({ open, onClose, save, conf }) => {
       </DialogContent>
       <DialogActions>
         {currentStep > 0 && <Button onClick={handlePrevious}>Précédent</Button>}
-        {currentStep < steps.length - 1 && (currentStep !== 2 || metadataForm) && (
-          <Button onClick={handleNext}>Suivant</Button>
-        )}
+        {currentStep < steps.length - 1 &&
+          !((currentStep === 2 && !metadataForm) || (currentStep === 3 && !dataForm)) && (
+            <Button onClick={handleNext}>Suivant</Button>
+          )}
 
-        {currentStep < steps.length - 1 && currentStep === 2 && !metadataForm && (
-          <Button endIcon={<SkipNext />} onClick={handleSkip}>
-            Passer
-          </Button>
-        )}
+        {currentStep < steps.length - 1 &&
+          ((currentStep === 2 && !metadataForm) || (currentStep === 3 && !dataForm)) && (
+            <Button endIcon={<SkipNext />} onClick={handleSkip}>
+              Passer
+            </Button>
+          )}
         {currentStep === steps.length - 1 && <Button onClick={globaleSave}>Sauvegarder</Button>}
       </DialogActions>
     </Dialog>
