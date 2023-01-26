@@ -1,6 +1,14 @@
 {
   "updates": [
     {
+      "title": "Création d'un message à destination des utilisateurs",
+      "version": "1.5.1",
+      "content": [
+        "Ajout d'un message d'alerte rappelant que la fonctionnalité de visualisation arrive bientôt dans l'atelier de conception."
+      ],
+      "date": "2023-01-26"
+    },
+    {
       "title": "Nouvelle fonctionnalité - données de personnalisation",
       "version": "1.5.0",
       "content": [

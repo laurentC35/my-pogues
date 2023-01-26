@@ -210,7 +210,7 @@ export const QuestionnaireList = () => {
                           icon={<Visibility />}
                           title="Ouvrir le questionnaire dans Pogues"
                         />
-                        <Tooltip title="Voir mes visualisations">
+                        <Tooltip title="Créer / Voir mes visualisations">
                           <Link to={`/questionnaire/${id}/visualisations`}>
                             <IconButton>
                               <ScreenSearchDesktop />

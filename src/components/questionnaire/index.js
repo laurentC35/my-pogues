@@ -2,12 +2,17 @@ import {
   AddCircle,
   Archive,
   ArrowBack,
+  Close,
   Delete,
   Preview,
   Update,
   Warning,
 } from '@mui/icons-material';
 import {
+  Alert,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Paper,
   styled,
@@ -22,7 +27,7 @@ import {
 } from '@mui/material';
 import { ConfMenu } from 'components/questionnaires/ConfMenu';
 import { AppContext } from 'MainApp';
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createZipAndDowload } from 'utils/api/dataDownload';
 import { DELETED_STATE, OK_STATE, OUTDATED_STATE } from 'utils/constants';
@@ -57,6 +62,10 @@ export const Questionnaire = () => {
 
   const [visuEdit, setVisuEdit] = useState(null);
   const [confEdit, setConfEdit] = useState(null);
+
+  const [warningOpen, setWarningOpen] = useState(true);
+
+  const closeWarning = useCallback(() => setWarningOpen(false), []);
 
   const addNewVisu = conf => {
     setConfEdit(conf);
@@ -276,6 +285,27 @@ export const Questionnaire = () => {
           )}
         </div>
       </div>
+
+      <Dialog open={warningOpen} onClose={closeWarning} maxWidth="md" fullWidth>
+        <DialogTitle>
+          Attention : fonctionnalité expérimentale
+          <IconButton
+            aria-label="close"
+            onClick={closeWarning}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: theme => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Alert severity="warning">{`ATTENTION : cette fonctionnalité est expérimentale et représente l'avant-première d'une fonctionnalité disponible prochainement dans l'atelier de conception.`}</Alert>
+        </DialogContent>
+      </Dialog>
 
       {questionnaireFromDb && (!visualizations || visualizations?.length === 0) && (
         <Typography>Pas de visualisation</Typography>
