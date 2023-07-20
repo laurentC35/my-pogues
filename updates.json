@@ -2,8 +2,8 @@
   "updates": [
     {
       "title": "Ajout des contrôles à la génération Eno",
-      "version": "1.5.2",
-      "content": ["Ajout du paramètre 'control' à l'appel à l'api ENO."],
+      "version": "1.5.3",
+      "content": ["Ajout du paramètre 'control' à l'appel à l'api ENO.", "Corrections mineures."],
       "date": "2023-03-24"
     },
     {

@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://laurentc35.github.io/my-pogues/static/css/main.6e0a7e9b.css",
-    "main.js": "https://laurentc35.github.io/my-pogues/static/js/main.b9b26847.js",
+    "main.js": "https://laurentc35.github.io/my-pogues/static/js/main.c589952f.js",
     "static/js/787.a1ca3b13.chunk.js": "https://laurentc35.github.io/my-pogues/static/js/787.a1ca3b13.chunk.js",
     "index.html": "https://laurentc35.github.io/my-pogues/index.html",
     "main.6e0a7e9b.css.map": "https://laurentc35.github.io/my-pogues/static/css/main.6e0a7e9b.css.map",
-    "main.b9b26847.js.map": "https://laurentc35.github.io/my-pogues/static/js/main.b9b26847.js.map",
+    "main.c589952f.js.map": "https://laurentc35.github.io/my-pogues/static/js/main.c589952f.js.map",
     "787.a1ca3b13.chunk.js.map": "https://laurentc35.github.io/my-pogues/static/js/787.a1ca3b13.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6e0a7e9b.css",
-    "static/js/main.b9b26847.js"
+    "static/js/main.c589952f.js"
   ]
 }
