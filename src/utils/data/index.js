@@ -80,8 +80,35 @@ export const poguesQuestionnaireToCsv = ({ Variables: { Variable: questionnaireV
       type,
       Datatype: { typeName },
     } = currentVariable;
+    const lunaticType = getLunaticTypeFromPoguesType(type);
+    if (lunaticType === 'CALCULATED') return finalCsv;
     return `${finalCsv}${Name};${getExampleType(typeName)};${getLunaticTypeFromPoguesType(
       type
     )};${typeName}\n`;
   }, 'NAME;VALUE;TYPE;DATA_TYPE\n');
 };
+
+export const poguesQuestionnaireToCsvCollecteAndExternalIntegration =
+  variableType =>
+  ({ Variables: { Variable: questionnaireVariables } }) => {
+    return questionnaireVariables.reduce((finalCsv, currentVariable) => {
+      const { Name, type } = currentVariable;
+      const lunaticType = getLunaticTypeFromPoguesType(type);
+      if (lunaticType !== variableType) return finalCsv;
+      return `${finalCsv};${Name}`;
+    }, 'ID_UE');
+  };
+
+export const poguesQuestionnaireToCsvExternalIntegration = ({
+  Variables: { Variable: questionnaireVariables },
+}) =>
+  poguesQuestionnaireToCsvCollecteAndExternalIntegration('EXTERNAL')({
+    Variables: { Variable: questionnaireVariables },
+  });
+
+export const poguesQuestionnaireToCsvCollectedIntegration = ({
+  Variables: { Variable: questionnaireVariables },
+}) =>
+  poguesQuestionnaireToCsvCollecteAndExternalIntegration('COLLECTED')({
+    Variables: { Variable: questionnaireVariables },
+  });

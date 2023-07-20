@@ -40,7 +40,7 @@ const getDDIQuestionnaire = apiUrl => body => token =>
 const ddi2JsonLunaticFullOptions = apiUrl => options => ddi => token => {
   const { mode, pagination, questNum, seqNum, context, commentQuest, timeQuest } = options;
   return postBlobRequest(
-    `${apiUrl}/questionnaire/ddi-2-lunatic-json/${mode}?parsingXpathVTL=false&Pagination=${pagination}&QuestNum=${questNum}&SeqNum=${seqNum}&context=${context}&AddFilterResult=true&PreQuestSymbol=false&CommentQuestion=${commentQuest}&ResponseTimeQuestion=${timeQuest}&includeUnusedCalculatedVariables=false&control=true`
+    `${apiUrl}/questionnaire/ddi-2-lunatic-json/${mode}?parsingXpathVTL=false&Pagination=${pagination}&QuestNum=${questNum}&SeqNum=${seqNum}&context=${context}&AddFilterResult=true&PreQuestSymbol=false&CommentQuestion=${commentQuest}&ResponseTimeQuestion=${timeQuest}&includeUnusedCalculatedVariables=true&control=true`
   )(token)(ddi);
 };
 
