@@ -60,7 +60,7 @@ const ddi2JsonLunaticFullOptions = apiUrl => options => ddi => token => {
       missingVariables: true,
       filterResult: true,
       filterDescription: false,
-      lunaticPaginationMode: 'QUESTION',
+      lunaticPaginationMode: pagination,
     },
   };
   return postMultiBlobRequest(`${apiUrl}/questionnaire/ddi-2-lunatic-json`)(token)(ddi)(params);
