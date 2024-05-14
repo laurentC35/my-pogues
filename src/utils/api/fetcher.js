@@ -75,3 +75,30 @@ export const fetcherForEno = async (url, token, ddiAsBlob) => {
     return { error: true, statusText: error.message };
   }
 };
+
+export const fetcherForEnoJava = async (url, token, ddiAsBlob, params) => {
+  let formData = new FormData();
+
+  const paramsAsBlob = new Blob([JSON.stringify(params, null, 2)], {
+    type: 'application/json',
+  });
+  formData.append('in', ddiAsBlob, 'in.xml');
+  formData.append('params', paramsAsBlob, 'params.json');
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+    const { ok, status, statusText } = response;
+    if (ok) {
+      try {
+        const data = await readJsonResponse(response);
+        return { data, status, statusText };
+      } catch (error) {
+        return { error: true, status, statusText: error.message };
+      }
+    } else return { error: true, status, statusText };
+  } catch (error) {
+    return { error: true, statusText: error.message };
+  }
+};

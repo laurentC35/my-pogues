@@ -1,4 +1,4 @@
-import { fetcher, fetcherForEno, fetcherXMLFile } from './fetcher';
+import { fetcher, fetcherForEno, fetcherForEnoJava, fetcherXMLFile } from './fetcher';
 
 const getRequest = url => token => fetcher(url, token, 'GET', null);
 const putRequest = url => token => body => fetcher(url, token, 'PUT', body);
@@ -7,6 +7,8 @@ const deleteRequest = url => token => fetcher(url, token, 'DELETE', null);
 
 const postXmlRequest = url => token => body => fetcherXMLFile(url, token, 'POST', body);
 const postBlobRequest = url => token => blob => fetcherForEno(url, token, blob);
+const postMultiBlobRequest = url => token => blob => params =>
+  fetcherForEnoJava(url, token, blob, params);
 
 const init = apiUrl => token => getRequest(`${apiUrl}/api/init`)(token);
 
@@ -39,9 +41,29 @@ const getDDIQuestionnaire = apiUrl => body => token =>
 
 const ddi2JsonLunaticFullOptions = apiUrl => options => ddi => token => {
   const { mode, pagination, questNum, seqNum, context, commentQuest, timeQuest } = options;
-  return postBlobRequest(
-    `${apiUrl}/questionnaire/ddi-2-lunatic-json/${mode}?parsingXpathVTL=false&Pagination=${pagination}&QuestNum=${questNum}&SeqNum=${seqNum}&context=${context}&AddFilterResult=true&PreQuestSymbol=false&CommentQuestion=${commentQuest}&ResponseTimeQuestion=${timeQuest}&includeUnusedCalculatedVariables=true&control=true`
-  )(token)(ddi);
+  const params = {
+    context: context,
+    modeParameter: mode,
+    outFormat: 'LUNATIC',
+    campaignName: 'test-2020-x00',
+    language: 'FR',
+    identificationQuestion: false,
+    responseTimeQuestion: timeQuest,
+    commentSection: commentQuest,
+    sequenceNumbering: seqNum,
+    questionNumberingMode: questNum,
+    arrowCharInQuestions: true,
+    selectedModes: [mode],
+    lunatic: {
+      controls: true,
+      toolTip: true,
+      missingVariables: true,
+      filterResult: true,
+      filterDescription: false,
+      lunaticPaginationMode: 'QUESTION',
+    },
+  };
+  return postMultiBlobRequest(`${apiUrl}/questionnaire/ddi-2-lunatic-json`)(token)(ddi)(params);
 };
 
 const ddi2JsonLunaticSimple = apiUrl => options => ddi => token => {
