@@ -1,6 +1,6 @@
 {
   "name": "my-pogues",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.8.1",
