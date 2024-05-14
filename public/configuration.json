@@ -4,11 +4,11 @@
     {
       "name": "Cloud",
       "conf": {
-        "poguesUrl": "https://pogues.demo.insee.io",
-        "poguesBoUrl": "https://pogues-back-office.demo.insee.io",
-        "enoWsUrl": "https://eno-ws.demo.insee.io",
-        "stromaeUrl": "https://stromae-v2.demo.insee.io",
-        "queenUrl": "https://queen.demo.insee.io"
+        "poguesUrl": "https://conception-questionnaires.demo.insee.io",
+        "poguesBoUrl": "https://api-conception-questionnaires.demo.insee.io",
+        "enoWsUrl": "https://api-generation-questionnaires.demo.insee.io",
+        "stromaeUrl": "https://visualisation-questionnaires-web-v2.demo.insee.io",
+        "queenUrl": "https://visualisation-questionnaires-enqueteurs.demo.insee.io"
       }
     }
   ]
