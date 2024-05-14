@@ -1,6 +1,12 @@
 {
   "updates": [
     {
+      "title": "Passage à Eno Java",
+      "version": "1.6.0",
+      "content": ["Pasage à Eno-Java"],
+      "date": "2024-05-14"
+    },
+    {
       "title": "Ajout des contrôles à la génération Eno",
       "version": "1.5.3",
       "content": ["Ajout du paramètre 'control' à l'appel à l'api ENO.", "Corrections mineures."],
