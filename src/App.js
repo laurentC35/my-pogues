@@ -8,12 +8,14 @@ import { Outlet } from 'react-router-dom';
 import { NewsUpdate } from 'components/newsUpdate';
 import { Help } from 'components/help';
 import { AppContext } from 'MainApp';
+import { SupportEnd } from 'components/supportEnd';
 
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { appVersion } = useContext(AppContext);
   const [newsOpen, setNewsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [supportEndOpen, setSupportEndOpen] = useState(true);
 
   return (
     <>
@@ -56,6 +58,7 @@ function App() {
       <EnvForm open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <NewsUpdate open={newsOpen} setOpen={setNewsOpen} />
       <Help open={helpOpen} setOpen={setHelpOpen} />
+      <SupportEnd open={supportEndOpen} setOpen={setSupportEndOpen} />
     </>
   );
 }
