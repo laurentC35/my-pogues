@@ -1,6 +1,16 @@
 {
   "updates": [
     {
+      "title": "Décommissionnement de My-Pogues",
+      "version": "1.6.1",
+      "content": [
+        "Le support de l'application a pris fin le 14/05/2024.",
+        "Le service prendra fin le 1 juillet 2024, l'application ne sera donc plus disponible à partir de cette date.",
+        "Vous êtes invités à utiliser Public-enemy pour personnaliser vos questionnaires."
+      ],
+      "date": "2024-05-14"
+    },
+    {
       "title": "Passage à Eno Java",
       "version": "1.6.0",
       "content": ["Pasage à Eno-Java"],
