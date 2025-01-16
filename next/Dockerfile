@@ -1,5 +1,5 @@
 # Stage 1: Build the React app
-FROM node:20 AS builder
+FROM node:18 AS builder
 
 WORKDIR /app
 COPY . /app/
