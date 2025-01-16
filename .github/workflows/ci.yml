@@ -24,6 +24,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Get current version
         id: version
         uses: notiz-dev/github-action-json-property@release
